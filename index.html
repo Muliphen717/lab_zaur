@@ -271,25 +271,7 @@
     border-radius: var(--radius);
   }
 
-  /* Стили для счетчиков */
-  .counter-container {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 15px;
-  }
-
-  .counter {
-    font-size: 1.4rem;
-    color: var(--accent);
-    background: var(--terminal-bg);
-    padding: 8px 12px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    box-shadow: var(--glow);
-    transition: var(--transition);
-    font-weight: bold;
-  }
-
+  
   .feature-card:hover .counter {
     box-shadow: 0 0 10px rgba(255, 107, 0, 0.7);
   }
@@ -781,7 +763,7 @@
   /* СТИЛИ ДЛЯ ПАДАЮЩИХ ЗУБОВ */
   .falling-tooth {
     position: fixed;
-    font-size: 20px;
+    font-size: 25px;
     pointer-events: none;
     z-index: 9999;
     user-select: none;
@@ -1051,8 +1033,6 @@
           <div class="feature-icon">⚡</div>
           <h3 class="feature-title">Fast Turnaround</h3>
           <p class="feature-description">10 minutes to 10 hours depending on case complexity</p>
-          <div class="counter-container">
-            <div class="counter" data-target="3094">0</div>
           </div>
         </div>
         
@@ -1072,8 +1052,6 @@
           <div class="feature-icon">👨‍🏫</div>
           <h3 class="feature-title">Teaching Experience</h3>
           <p class="feature-description">Courses on Exocad, MiYO zirconia staining techniques</p>
-          <div class="counter-container">
-            <div class="counter" data-target="8">0</div>
           </div>
         </div>
           
