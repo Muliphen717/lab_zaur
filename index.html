@@ -50,96 +50,6 @@
     font-weight: 400;
     letter-spacing: 0.02em;
     transition: var(--transition);
-    padding-top: 70px; /* Для фиксированной шапки */
-  }
-
-  /* НАВИГАЦИОННАЯ ПАНЕЛЬ С ЛЕДЯНЫМ ЭФФЕКТОМ */
-  .nav-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: color-mix(in srgb, var(--card-bg) 85%, transparent);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border-bottom: 1px solid color-mix(in srgb, var(--border) 30%, transparent);
-    z-index: 1000;
-    padding: 8px 0; /* Уменьшил паддинг */
-    transition: var(--transition);
-    height: 60px; /* Фиксированная высота */
-    display: flex;
-    align-items: center;
-  }
-
-  .nav-container {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-  }
-
-  .logo {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--accent);
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .logo-image {
-    height: 44px; /* Уменьшил логотип для компактности */
-    width: auto;
-    transition: var(--transition);
-  }
-
-  .logo-image:hover {
-    transform: scale(1.05);
-  }
-
-  .mobile-menu-btn {
-    display: none;
-    background: none;
-    border: none;
-    font-size: 1.3rem; /* Уменьшил размер кнопки */
-    color: var(--text);
-    cursor: pointer;
-    padding: 5px;
-    z-index: 1001;
-    transition: var(--transition);
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .mobile-menu-btn.active {
-    transform: rotate(90deg);
-  }
-
-  .nav-links {
-    display: flex;
-    gap: 30px;
-  }
-
-  .nav-links a {
-    color: var(--text);
-    text-decoration: none;
-    font-weight: 500;
-    transition: var(--transition);
-    padding: 5px 10px;
-    border-radius: 6px;
-    font-size: 0.95rem; /* Уменьшил размер шрифта */
-  }
-
-  .nav-links a:hover {
-    color: var(--accent);
-    background: color-mix(in srgb, var(--accent) 10%, transparent);
   }
 
   .container {
@@ -150,11 +60,10 @@
 
   header {
     background: linear-gradient(135deg, var(--card-bg) 0%, color-mix(in srgb, var(--card-bg) 95%, var(--accent) 5%) 100%);
-    padding: 60px 0 40px; /* Уменьшил отступы чтобы аватарка была выше */
+    padding: 100px 0 60px;
     text-align: center;
     transition: var(--transition);
     border-bottom: 1px solid var(--border);
-    margin-top: -10px; /* Компенсируем уменьшенную шапку */
   }
 
   .profile-section {
@@ -212,7 +121,7 @@
   .section-title {
     font-size: 1.6rem;
     font-weight: 600;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--text);
@@ -228,10 +137,6 @@
     height: 3px;
     background: linear-gradient(90deg, var(--accent) 0%, var(--accent-light) 100%);
     border-radius: 2px;
-  }
-
-  .about-text {
-    margin-bottom: 30px;
   }
 
   .about-text p {
@@ -455,218 +360,35 @@
     color: var(--text-light);
   }
 
-  /* МОБИЛЬНАЯ АДАПТАЦИЯ */
   @media (max-width: 768px) {
-    body {
-      padding-top: 50px; /* Уменьшил отступ для тела */
-    }
-    
-    .nav-header {
-      padding: 5px 0; /* Еще уменьшил паддинг на мобильных */
-      height: 50px; /* Уменьшил высоту на мобильных */
-    }
-    
-    .mobile-menu-btn {
-      display: flex;
-      font-size: 1.2rem;
-    }
-    
-    .nav-links {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: color-mix(in srgb, var(--card-bg) 92%, transparent);
-      backdrop-filter: blur(25px) saturate(200%);
-      -webkit-backdrop-filter: blur(25px) saturate(200%);
-      flex-direction: column;
-      padding: 0;
-      border-bottom: 1px solid color-mix(in srgb, var(--border) 40%, transparent);
-      box-shadow: var(--shadow);
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.5s cubic-bezier(0.77, 0, 0.175, 1), padding 0.4s ease;
-    }
-    
-    .nav-links.active {
-      max-height: 300px;
-      padding: 15px; /* Уменьшил паддинг для меню */
-    }
-    
-    .nav-links a {
-      padding: 10px 15px; /* Уменьшил паддинг для ссылок */
-      border-radius: 8px;
-      text-align: center;
-      opacity: 0;
-      transform: translateY(-10px);
-      transition: opacity 0.4s ease, transform 0.4s ease, background-color 0.3s ease;
-      transition-delay: 0s;
-      font-size: 0.9rem;
-    }
-    
-    .nav-links.active a {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    
-    /* Задержка для плавного появления ссылок */
-    .nav-links.active a:nth-child(1) { transition-delay: 0.1s; }
-    .nav-links.active a:nth-child(2) { transition-delay: 0.2s; }
-    .nav-links.active a:nth-child(3) { transition-delay: 0.3s; }
-    
-    /* Увеличиваем логотип на мобильной версии */
-    .logo-image {
-      height: 40px; /* Компактный размер на мобильных */
-    }
-    
     h1 {
       font-size: 2rem;
     }
-    
-    .subtitle {
-      font-size: 1.1rem;
-    }
-    
-    .tagline {
-      font-size: 1rem;
-    }
-    
-    .profile-image {
-      width: 150px;
-      height: 150px;
-    }
-    
     iframe {
       height: 300px;
     }
-    
-    .features {
-      grid-template-columns: 1fr;
-      gap: 15px;
-    }
-    
-    .feature-card {
-      padding: 20px;
-    }
-    
     .contacts-blur-box {
       padding: 40px 20px;
     }
-    
     .social-links {
       gap: 15px;
     }
-    
     .social-link {
       min-width: 120px;
       padding: 20px 15px;
     }
-    
     .contacts-title {
       font-size: 1.8rem;
-    }
-    
-    .section-title {
-      font-size: 1.4rem;
-      margin-bottom: 25px;
-    }
-    
-    .about-text {
-      margin-bottom: 25px;
-    }
-    
-    .about-text p {
-      font-size: 1rem;
-    }
-    
-    .footer-links {
-      flex-direction: column;
-      gap: 15px;
-    }
-    
-    header {
-      padding: 50px 0 30px; /* Уменьшил отступы хедера на мобильных */
-      margin-top: -5px; /* Компенсация для мобильных */
-    }
-  }
-
-  @media (max-width: 480px) {
-    body {
-      padding-top: 45px;
-    }
-    
-    .nav-header {
-      height: 45px;
-    }
-    
-    h1 {
-      font-size: 1.8rem;
-    }
-    
-    .profile-image {
-      width: 130px;
-      height: 130px;
-    }
-    
-    .social-links {
-      flex-direction: column;
-      align-items: center;
-    }
-    
-    .social-link {
-      width: 100%;
-      max-width: 250px;
-    }
-    
-    .cases-grid {
-      gap: 30px;
-    }
-    
-    .case-content {
-      padding: 15px;
-    }
-    
-    header {
-      padding: 45px 0 25px;
-    }
-    
-    main {
-      padding: 50px 0;
-    }
-    
-    section {
-      margin-bottom: 60px;
-    }
-    
-    /* Сохраняем размер логотипа на очень маленьких экранах */
-    .logo-image {
-      height: 38px;
     }
   }
 </style>
 </head>
 <body>
-  <!-- НАВИГАЦИОННАЯ ПАНЕЛЬ -->
-  <nav class="nav-header">
-    <div class="nav-container">
-      <a href="#" class="logo">
-        <!-- ЗАМЕНИТЕ "logo.png" НА ПУТЬ К ВАШЕМУ ЛОГОТИПУ -->
-        <img src="photos/logo.png" class="logo-image">
-      </a>
-      
-      <button class="mobile-menu-btn">☰</button>
-      
-      <div class="nav-links">
-        <a href="#about">About</a>
-        <a href="#cases">Cases</a>
-        <a href="#contacts">Contact</a>
-      </div>
-    </div>
-  </nav>
-
   <header>
     <div class="container">
       <div class="profile-section">
+        <!-- ЗДЕСЬ ДОБАВЬТЕ ВАШЕ ФОТО -->
+        <!-- Удалите следующую строку и раскомментируйте строку ниже -->
         <img src="photos/42.jpg" alt="Zaur Magomedov" class="profile-image">
         
         <div class="header-text">
@@ -805,6 +527,7 @@
         <p>Zaur Magomedov — Digital Smile Design & CAD/CAM Expertise</p>
         <div class="footer-links">
           <a href="#about">About</a>
+          <a href="#work">Work</a>
           <a href="#cases">Cases</a>
           <a href="#contacts">Contact</a>
         </div>
@@ -814,33 +537,6 @@
   </footer>
 
   <script>
-    // Мобильное меню с улучшенной анимацией
-    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-    const navLinks = document.querySelector('.nav-links');
-    
-    if (mobileMenuBtn) {
-      mobileMenuBtn.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
-        mobileMenuBtn.classList.toggle('active');
-        
-        // Анимация иконки меню
-        if (navLinks.classList.contains('active')) {
-          mobileMenuBtn.innerHTML = '✕';
-        } else {
-          mobileMenuBtn.innerHTML = '☰';
-        }
-      });
-    }
-    
-    // Закрытие меню при клике на ссылку
-    document.querySelectorAll('.nav-links a').forEach(link => {
-      link.addEventListener('click', () => {
-        navLinks.classList.remove('active');
-        mobileMenuBtn.classList.remove('active');
-        mobileMenuBtn.innerHTML = '☰';
-      });
-    });
-
     // Simple animation on scroll
     const observerOptions = {
       threshold: 0.1,
