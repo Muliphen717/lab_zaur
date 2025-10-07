@@ -50,6 +50,80 @@
     font-weight: 400;
     letter-spacing: 0.02em;
     transition: var(--transition);
+    padding-top: 70px; /* Для фиксированной шапки */
+  }
+
+  /* НАВИГАЦИОННАЯ ПАНЕЛЬ */
+  .nav-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: color-mix(in srgb, var(--card-bg) 95%, transparent);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    z-index: 1000;
+    padding: 15px 0;
+    transition: var(--transition);
+  }
+
+  .nav-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo-image {
+    height: 40px;
+    width: auto;
+    transition: var(--transition);
+  }
+
+  .logo-image:hover {
+    transform: scale(1.05);
+  }
+
+  .mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--text);
+    cursor: pointer;
+    padding: 5px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 30px;
+  }
+
+  .nav-links a {
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 500;
+    transition: var(--transition);
+    padding: 5px 10px;
+    border-radius: 6px;
+  }
+
+  .nav-links a:hover {
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 10%, transparent);
   }
 
   .container {
@@ -60,7 +134,7 @@
 
   header {
     background: linear-gradient(135deg, var(--card-bg) 0%, color-mix(in srgb, var(--card-bg) 95%, var(--accent) 5%) 100%);
-    padding: 100px 0 60px;
+    padding: 80px 0 60px;
     text-align: center;
     transition: var(--transition);
     border-bottom: 1px solid var(--border);
@@ -121,7 +195,7 @@
   .section-title {
     font-size: 1.6rem;
     font-weight: 600;
-    margin-bottom: 40px;
+    margin-bottom: 30px; /* Уменьшил отступ для лучшего баланса */
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--text);
@@ -137,6 +211,10 @@
     height: 3px;
     background: linear-gradient(90deg, var(--accent) 0%, var(--accent-light) 100%);
     border-radius: 2px;
+  }
+
+  .about-text {
+    margin-bottom: 30px; /* Добавил отступ снизу для баланса */
   }
 
   .about-text p {
@@ -360,35 +438,183 @@
     color: var(--text-light);
   }
 
+  /* МОБИЛЬНАЯ АДАПТАЦИЯ */
   @media (max-width: 768px) {
+    body {
+      padding-top: 60px;
+    }
+    
+    .nav-header {
+      padding: 12px 0;
+    }
+    
+    .mobile-menu-btn {
+      display: block;
+    }
+    
+    .nav-links {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: color-mix(in srgb, var(--card-bg) 98%, transparent);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      flex-direction: column;
+      padding: 20px;
+      border-bottom: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+    
+    .nav-links.active {
+      display: flex;
+    }
+    
+    .nav-links a {
+      padding: 12px 15px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    
+    .logo-image {
+      height: 35px;
+    }
+    
     h1 {
       font-size: 2rem;
     }
+    
+    .subtitle {
+      font-size: 1.1rem;
+    }
+    
+    .tagline {
+      font-size: 1rem;
+    }
+    
+    .profile-image {
+      width: 150px;
+      height: 150px;
+    }
+    
     iframe {
       height: 300px;
     }
+    
+    .features {
+      grid-template-columns: 1fr;
+      gap: 15px;
+    }
+    
+    .feature-card {
+      padding: 20px;
+    }
+    
     .contacts-blur-box {
       padding: 40px 20px;
     }
+    
     .social-links {
       gap: 15px;
     }
+    
     .social-link {
       min-width: 120px;
       padding: 20px 15px;
     }
+    
     .contacts-title {
       font-size: 1.8rem;
+    }
+    
+    .section-title {
+      font-size: 1.4rem;
+      margin-bottom: 25px; /* Уменьшил для мобильных */
+    }
+    
+    .about-text {
+      margin-bottom: 25px; /* Уменьшил для мобильных */
+    }
+    
+    .about-text p {
+      font-size: 1rem;
+    }
+    
+    .footer-links {
+      flex-direction: column;
+      gap: 15px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    h1 {
+      font-size: 1.8rem;
+    }
+    
+    .profile-image {
+      width: 130px;
+      height: 130px;
+    }
+    
+    .social-links {
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .social-link {
+      width: 100%;
+      max-width: 250px;
+    }
+    
+    .cases-grid {
+      gap: 30px;
+    }
+    
+    .case-content {
+      padding: 15px;
+    }
+    
+    header {
+      padding: 60px 0 40px;
+    }
+    
+    main {
+      padding: 50px 0;
+    }
+    
+    section {
+      margin-bottom: 60px;
+    }
+    
+    .logo-image {
+      height: 30px;
     }
   }
 </style>
 </head>
 <body>
+  <!-- НАВИГАЦИОННАЯ ПАНЕЛЬ -->
+  <nav class="nav-header">
+    <div class="nav-container">
+      <a href="#" class="logo">
+        <!-- ЗАМЕНИТЕ "logo.png" НА ПУТЬ К ВАШЕМУ ЛОГОТИПУ -->
+        <img src="photos/logo.png" class="logo-image">
+      </a>
+      
+      <button class="mobile-menu-btn">☰</button>
+      
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#cases">Cases</a>
+        <a href="#contacts">Contact</a>
+      </div>
+    </div>
+  </nav>
+
   <header>
     <div class="container">
       <div class="profile-section">
-        <!-- ЗДЕСЬ ДОБАВЬТЕ ВАШЕ ФОТО -->
-        <!-- Удалите следующую строку и раскомментируйте строку ниже -->
         <img src="photos/42.jpg" alt="Zaur Magomedov" class="profile-image">
         
         <div class="header-text">
@@ -527,7 +753,6 @@
         <p>Zaur Magomedov — Digital Smile Design & CAD/CAM Expertise</p>
         <div class="footer-links">
           <a href="#about">About</a>
-          <a href="#work">Work</a>
           <a href="#cases">Cases</a>
           <a href="#contacts">Contact</a>
         </div>
@@ -537,6 +762,23 @@
   </footer>
 
   <script>
+    // Мобильное меню
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+    const navLinks = document.querySelector('.nav-links');
+    
+    if (mobileMenuBtn) {
+      mobileMenuBtn.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+      });
+    }
+    
+    // Закрытие меню при клике на ссылку
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+      });
+    });
+
     // Simple animation on scroll
     const observerOptions = {
       threshold: 0.1,
