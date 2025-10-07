@@ -45,6 +45,8 @@
       radial-gradient(circle at 25% 25%, rgba(255, 107, 0, 0.05) 0%, transparent 50%),
       radial-gradient(circle at 75% 75%, rgba(255, 107, 0, 0.05) 0%, transparent 50%);
     overflow-x: hidden;
+    cursor: pointer;
+    touch-action: none;
   }
 
   .container {
@@ -294,7 +296,7 @@
     box-shadow: 0 0 10px rgba(255, 107, 0, 0.7);
   }
 
-  /* КАРТОЧКА ГАЛЕРЕИ */
+  /* КАРТОЧКА ГАЛЛЕРЕИ */
   .gallery-card {
     background: var(--card-bg);
     padding: 25px 20px;
@@ -369,6 +371,17 @@
     padding: 8px 12px;
     border: 1px solid var(--border);
     border-radius: var(--radius);
+  }
+
+  /* Стили для Canvas с зубами */
+  #teethCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1000;
   }
 
   /* CASES */
@@ -778,15 +791,6 @@
     animation: flicker 3s infinite;
   }
 
-  /* СТИЛИ ДЛЯ ПАДАЮЩИХ ЗУБОВ */
-  .falling-tooth {
-    position: fixed;
-    font-size: 40px;
-    pointer-events: none;
-    z-index: 9999;
-    user-select: none;
-  }
-
   @media (max-width: 768px) {
     body {
       font-size: 1.1rem;
@@ -1016,6 +1020,9 @@
 </style>
 </head>
 <body>
+  <!-- Canvas для эмодзи зубов -->
+  <canvas id="teethCanvas"></canvas>
+
   <header>
     <div class="container">
       <div class="profile-section">
@@ -1083,7 +1090,7 @@
            <p class="feature-description">Available worldwide</p>
         </div>
 
-        <!-- КАРТОЧКА ГАЛЕРЕИ -->
+        <!-- КАРТОЧКА ГАЛЛЕРЕИ -->
         <div class="gallery-card" id="open-gallery-card">
           <div class="gallery-icon">🖼️</div>
           <h3 class="gallery-title">Work Gallery</h3>
@@ -1164,7 +1171,7 @@
 
   </main>
 
-  <!-- МОДАЛЬНОЕ ОКНО ГАЛЕРЕИ -->
+  <!-- МОДАЛЬНОЕ ОКНО ГАЛЛЕРЕИ -->
   <div id="galleryModal" class="gallery-modal">
     <div class="gallery-content">
       <div class="gallery-header">
@@ -1202,133 +1209,92 @@
   </footer>
 
   <script>
-    // ==================== КЛАСС ДЛЯ ПАДАЮЩИХ ЗУБОВ ====================
-    class FallingTooth {
-      constructor(x, y) {
-        this.element = document.createElement('div');
-        this.element.className = 'falling-tooth';
-        this.element.textContent = '🦷';
-        this.element.style.left = x + 'px';
-        this.element.style.top = y + 'px';
-        document.body.appendChild(this.element);
-
-        // Физические свойства
-        this.x = x;
-        this.y = y;
-        this.vx = (Math.random() - 0.5) * 15; // Горизонтальная скорость
-        this.vy = Math.random() * -10 - 5; // Начальная вертикальная скорость (вверх)
-        this.rotation = Math.random() * 360;
-        this.rotationSpeed = (Math.random() - 0.5) * 20;
-        this.gravity = 0.5;
-        this.bounce = 0.7; // Коэффициент отскока
-        this.friction = 0.99;
-        this.alive = true;
-      }
-
-      update() {
-        // Применяем гравитацию
-        this.vy += this.gravity;
-
-        // Обновляем позицию
-        this.x += this.vx;
-        this.y += this.vy;
-
-        // Обновляем вращение
-        this.rotation += this.rotationSpeed;
-
-        // Проверка столкновения с полом
-        const windowHeight = window.innerHeight;
-        if (this.y > windowHeight - 40) {
-          this.y = windowHeight - 40;
-          this.vy *= -this.bounce;
-          this.rotationSpeed *= 0.8;
-
-          // Если скорость очень маленькая, останавливаем
-          if (Math.abs(this.vy) < 1) {
-            this.vy = 0;
-            this.vx *= 0.9;
-          }
-        }
-
-        // Проверка столкновения со стенками
-        const windowWidth = window.innerWidth;
-        if (this.x < 0) {
-          this.x = 0;
-          this.vx *= -this.bounce;
-        } else if (this.x > windowWidth - 40) {
-          this.x = windowWidth - 40;
-          this.vx *= -this.bounce;
-        }
-
-        // Применяем трение
-        this.vx *= this.friction;
-
-        // Обновляем DOM
-        this.element.style.left = this.x + 'px';
-        this.element.style.top = this.y + 'px';
-        this.element.style.transform = `rotate(${this.rotation}deg)`;
-
-        // Удаляем зуб если он остановился
-        if (Math.abs(this.vx) < 0.1 && Math.abs(this.vy) < 0.1 && this.y >= windowHeight - 41) {
-          this.alive = false;
-        }
-      }
-
-      remove() {
-        if (this.element && this.element.parentNode) {
-          this.element.style.transition = 'opacity 0.5s';
-          this.element.style.opacity = '0';
-          setTimeout(() => {
-            if (this.element && this.element.parentNode) {
-              this.element.parentNode.removeChild(this.element);
-            }
-          }, 500);
-        }
-      }
-    }
-
-    // Массив для хранения всех зубов
-    let teeth = [];
-
-    // Анимационный цикл
-    function animateTeeth() {
-      teeth = teeth.filter(tooth => {
-        if (tooth.alive) {
-          tooth.update();
-          return true;
-        } else {
-          tooth.remove();
+    // ФИЗИКА ЗУБОВ (аналогично скрипту Solitaire)
+    const dpr = window.devicePixelRatio;
+    const canvas = document.getElementById('teethCanvas');
+    const context = canvas.getContext('2d');
+    
+    canvas.width = window.innerWidth * dpr;
+    canvas.height = window.innerHeight * dpr;
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    
+    const teeth = [];
+    const toothSize = 30 * Math.round(dpr);
+    const toothSizeHalf = toothSize / 2;
+    
+    function Tooth(x, y, sx, sy) {
+      if (sx === 0) sx = 2;
+      
+      this.update = function() {
+        x += sx;
+        y += sy;
+        
+        if (x < (-toothSizeHalf) || x > (canvas.width + toothSizeHalf)) {
+          const index = teeth.indexOf(this);
+          teeth.splice(index, 1);
           return false;
         }
-      });
-
-      if (teeth.length > 0) {
-        requestAnimationFrame(animateTeeth);
+        
+        if (y > canvas.height - toothSizeHalf) {
+          y = canvas.height - toothSizeHalf;
+          sy = -sy * 0.85;
+        }
+        
+        sy += 0.98;
+        
+        context.font = `${toothSize}px Arial`;
+        context.textAlign = 'center';
+        context.textBaseline = 'middle';
+        context.fillText('🦷', Math.floor(x), Math.floor(y));
+        
+        return true;
       }
     }
-
-    // Функция создания зубов
-    function createTeeth(event) {
-      const rect = event.currentTarget.getBoundingClientRect();
-      const x = rect.left + rect.width / 2;
-      const y = rect.top + rect.height / 2;
-
-      // Создаем несколько зубов
-      const count = 15 + Math.floor(Math.random() * 10); // От 15 до 25 зубов
-      for (let i = 0; i < count; i++) {
-        const offsetX = (Math.random() - 0.5) * rect.width;
-        const offsetY = (Math.random() - 0.5) * rect.height;
-        teeth.push(new FallingTooth(x + offsetX, y + offsetY));
-      }
-
-      // Запускаем анимацию если она еще не запущена
-      if (teeth.length === count) {
-        animateTeeth();
-      }
-    }
-
-    // ==================== ОРИГИНАЛЬНЫЙ КОД ====================
     
+    function throwTooth(x, y) {
+      const tooth = new Tooth(
+        x * dpr, 
+        y * dpr, 
+        Math.floor(Math.random() * 6 - 3) * 2, 
+        -Math.random() * 16
+      );
+      teeth.push(tooth);
+    }
+    
+    // Обработчики событий для карточек (кроме галереи)
+    document.addEventListener('DOMContentLoaded', () => {
+      const featureCards = document.querySelectorAll('.feature-card');
+      
+      featureCards.forEach(card => {
+        card.addEventListener('click', function(event) {
+          const rect = card.getBoundingClientRect();
+          // Создаем 5-10 зубов при клике
+          const toothCount = 5 + Math.floor(Math.random() * 6);
+          
+          for (let i = 0; i < toothCount; i++) {
+            const x = rect.left + Math.random() * rect.width;
+            const y = rect.top + Math.random() * rect.height;
+            throwTooth(x, y);
+          }
+        });
+      });
+    });
+    
+    // Анимация
+    function animate() {
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      
+      let i = 0, l = teeth.length;
+      while (i < l) {
+        teeth[i].update() ? i++ : l--;
+      }
+      
+      requestAnimationFrame(animate);
+    }
+    
+    animate();
+
     // Анимация печатающегося текста для заголовков
     function initTypingTitles() {
       const typingTitles = document.querySelectorAll('.typing-title');
@@ -1349,8 +1315,9 @@
               if (i < text.length) {
                 title.insertBefore(document.createTextNode(text[i]), cursor);
                 i++;
-                setTimeout(typeWriter, 150);
+                setTimeout(typeWriter, 150); // скорость печати
               } else {
+                // После завершения печати оставляем курсор мигающим на 2 секунды, затем убираем
                 setTimeout(() => {
                   cursor.style.animation = 'none';
                   setTimeout(() => cursor.remove(), 500);
@@ -1358,6 +1325,7 @@
               }
             };
             
+            // Задержка перед началом печати
             setTimeout(typeWriter, 300);
             typingObserver.unobserve(title);
           }
@@ -1381,8 +1349,8 @@
           if (entry.isIntersecting) {
             const counter = entry.target;
             const target = parseInt(counter.getAttribute('data-target'));
-            const duration = 2000;
-            const increment = target / (duration / 16);
+            const duration = 2000; // 2 seconds
+            const increment = target / (duration / 16); // 60fps
             
             let current = 0;
             
@@ -1410,7 +1378,7 @@
       });
     }
 
-    // ГАЛЕРЕЯ - данные изображений
+    // ГАЛЕРЕЯ - данные изображений (замените на пути к вашим фото)
     const galleryImages = [
       { src: "photos/1.jpg", alt: "Dental work example 1" },
       { src: "photos/2.jpg", alt: "Dental work example 2" },
@@ -1419,6 +1387,7 @@
       { src: "photos/5.png", alt: "Dental work example 5" },
       { src: "photos/6.png", alt: "Dental work example 6" },
       { src: "photos/7.png", alt: "Dental work example 7" }
+      // Добавьте больше изображений по необходимости
     ];
 
     // Элементы галереи
@@ -1434,6 +1403,7 @@
 
     // Инициализация галереи
     function initGallery() {
+      // Создаем миниатюры
       galleryImages.forEach((image, index) => {
         const thumbnail = document.createElement('img');
         thumbnail.src = image.src;
@@ -1448,6 +1418,7 @@
         thumbnailsContainer.appendChild(thumbnail);
       });
       
+      // Показываем первое изображение
       if (galleryImages.length > 0) {
         showImage(0);
       }
@@ -1461,10 +1432,12 @@
       mainImage.src = image.src;
       mainImage.alt = image.alt;
       
+      // Обновляем активную миниатюру
       document.querySelectorAll('.thumbnail').forEach((thumb, i) => {
         thumb.classList.toggle('active', i === index);
       });
       
+      // Обновляем счетчик в заголовке
       document.querySelector('.gallery-title-modal').textContent = 
         `My Work Gallery (${index + 1}/${galleryImages.length})`;
     }
@@ -1490,13 +1463,13 @@
     // Открыть галерею
     function openGallery() {
       galleryModal.classList.add('active');
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden'; // Блокируем скролл страницы
     }
 
     // Закрыть галерею
     function closeGallery() {
       galleryModal.classList.remove('active');
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = 'auto'; // Возвращаем скролл
     }
 
     // Обработчики событий для галереи
@@ -1541,6 +1514,7 @@
           entry.target.style.opacity = '1';
           entry.target.style.transform = 'translateY(0)';
           
+          // Special handling for contacts blur box
           if (entry.target.classList.contains('contacts-blur-box')) {
             entry.target.classList.add('visible');
           }
@@ -1590,19 +1564,17 @@
       });
     });
 
-    // ==================== ДОБАВЛЕНИЕ ОБРАБОТЧИКОВ ДЛЯ ЗУБОВ ====================
-    
     // Инициализация анимации печатающихся заголовков, счетчиков и галереи
     document.addEventListener('DOMContentLoaded', () => {
       initTypingTitles();
       initCounters();
       initGallery();
+    });
 
-      // Добавляем обработчики кликов на все feature-card кроме gallery-card
-      const featureCards = document.querySelectorAll('.feature-card');
-      featureCards.forEach(card => {
-        card.addEventListener('click', createTeeth);
-      });
+    // Обработка изменения размера окна
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
     });
   </script>
 </body>
