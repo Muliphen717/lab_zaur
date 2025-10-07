@@ -43,19 +43,54 @@
   }
 
   body {
-    font-family: 'VT323', monospace;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.6;
-    font-weight: 400;
-    letter-spacing: 0.5px;
-    font-size: 1.2rem;
-    transition: var(--transition);
-    background-image: 
-      radial-gradient(circle at 25% 25%, rgba(255, 107, 0, 0.05) 0%, transparent 50%),
-      radial-gradient(circle at 75% 75%, rgba(255, 107, 0, 0.05) 0%, transparent 50%);
-    overflow-x: hidden;
-  }
+font-family: 'VT323', monospace;
+background: var(--bg);
+color: var(--text);
+line-height: 1.6;
+font-weight: 400;
+letter-spacing: 0.5px;
+font-size: 1.2rem;
+transition: var(--transition);
+/* Глубокий многослойный фон /
+background-image:
+/ Основной глубокий градиент */
+radial-gradient(ellipse 80% 50% at 50% -20%, rgba(255, 107, 0, 0.15) 0%, transparent 60%),
+radial-gradient(ellipse 50% 80% at -10% 50%, rgba(255, 107, 0, 0.1) 0%, transparent 60%),
+radial-gradient(ellipse 50% 80% at 110% 50%, rgba(255, 107, 0, 0.1) 0%, transparent 60%),
+/* Текстура сетки для глубины */
+linear-gradient(rgba(255, 107, 0, 0.03) 1px, transparent 1px),
+linear-gradient(90deg, rgba(255, 107, 0, 0.03) 1px, transparent 1px);
+background-size:
+100% 100%,
+100% 100%,
+100% 100%,
+50px 50px,
+50px 50px;
+background-position:
+center center,
+left center,
+right center,
+center center,
+center center;
+overflow-x: hidden;
+position: relative;
+}
+
+/* Добавляем псевдоэлемент для дополнительной глубины */
+body::before {
+content: '';
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background:
+radial-gradient(circle at 20% 80%, rgba(255, 107, 0, 0.05) 0%, transparent 25%),
+radial-gradient(circle at 80% 20%, rgba(255, 107, 0, 0.05) 0%, transparent 25%),
+radial-gradient(circle at 40% 40%, rgba(255, 107, 0, 0.03) 0%, transparent 25%);
+pointer-events: none;
+z-index: -1;
+}
 
   .container {
     max-width: 1100px;
@@ -64,14 +99,42 @@
   }
 
   header {
-    background: var(--card-bg);
-    padding: 80px 0 40px;
-    text-align: center;
-    transition: var(--transition);
-    border-bottom: 1px solid var(--border);
-    position: relative;
-    overflow: hidden;
-  }
+background:
+linear-gradient(135deg, rgba(17, 17, 17, 0.95) 0%, rgba(10, 10, 10, 0.98) 100%),
+radial-gradient(ellipse at top left, rgba(255, 107, 0, 0.2) 0%, transparent 50%),
+radial-gradient(ellipse at bottom right, rgba(255, 107, 0, 0.15) 0%, transparent 50%);
+padding: 80px 0 40px;
+text-align: center;
+transition: var(--transition);
+border-bottom: 1px solid var(--border);
+position: relative;
+overflow: hidden;
+backdrop-filter: blur(10px);
+-webkit-backdrop-filter: blur(10px);
+}
+
+/* Добавляем объемный эффект для header */
+header::before {
+content: '';
+position: absolute;
+top: 0;
+left: 0;
+right: 0;
+height: 1px;
+background: linear-gradient(90deg, transparent, var(--accent), transparent);
+opacity: 0.3;
+}
+
+header::after {
+content: '';
+position: absolute;
+bottom: 0;
+left: 0;
+right: 0;
+height: 1px;
+background: linear-gradient(90deg, transparent, var(--accent), transparent);
+opacity: 0.3;
+}
 
   .profile-section {
     display: flex;
@@ -103,28 +166,51 @@
   }
 
   h1 {
-    font-size: 2.5rem;
-    font-weight: 400;
-    letter-spacing: 1px;
-    margin-bottom: 0.6rem;
-    color: var(--text);
-  }
+font-size: 2.5rem;
+font-weight: 400;
+letter-spacing: 1px;
+margin-bottom: 0.6rem;
+color: var(--text);
+text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
 
-  .subtitle {
-    font-size: 1.4rem;
-    color: var(--text-light);
-    margin-bottom: 0.5rem;
-  }
+.subtitle {
+font-size: 1.4rem;
+color: var(--text-light);
+margin-bottom: 0.5rem;
+text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
 
-  .tagline {
-    color: var(--accent);
-    font-weight: 400;
-    font-size: 1.3rem;
-    border: 1px solid var(--border);
-    padding: 8px 16px;
-    background: rgba(255, 107, 0, 0.05);
-    border-radius: var(--radius);
-  }
+.tagline {
+color: var(--accent);
+font-weight: 400;
+font-size: 1.3rem;
+border: 1px solid var(--border);
+padding: 8px 16px;
+background:
+linear-gradient(135deg, rgba(255, 107, 0, 0.1) 0%, rgba(255, 107, 0, 0.05) 100%);
+border-radius: var(--radius);
+box-shadow:
+inset 0 1px 0 rgba(255, 255, 255, 0.1),
+0 4px 6px rgba(0, 0, 0, 0.2);
+position: relative;
+overflow: hidden;
+}
+
+.tagline::before {
+content: '';
+position: absolute;
+top: 0;
+left: -100%;
+width: 100%;
+height: 100%;
+background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+transition: var(--transition);
+}
+
+.tagline:hover::before {
+left: 100%;
+}
 
   main {
     padding: 50px 0;
@@ -1660,3 +1746,4 @@
   </script>
 </body>
 </html>
+
