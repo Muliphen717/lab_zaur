@@ -670,18 +670,18 @@
               if (i < text.length) {
                 title.insertBefore(document.createTextNode(text[i]), cursor);
                 i++;
-                setTimeout(typeWriter, 100); // скорость печати
+                setTimeout(typeWriter, 50); // скорость печати
               } else {
                 // После завершения печати оставляем курсор мигающим на 2 секунды, затем убираем
                 setTimeout(() => {
                   cursor.style.animation = 'none';
                   setTimeout(() => cursor.remove(), 500);
-                }, 2000);
+                }, 4000);
               }
             };
             
             // Задержка перед началом печати
-            setTimeout(typeWriter, 300);
+            setTimeout(typeWriter, 200);
             typingObserver.unobserve(title);
           }
         });
