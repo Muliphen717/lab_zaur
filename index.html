@@ -44,6 +44,29 @@
     background-image: 
       radial-gradient(circle at 25% 25%, rgba(255, 107, 0, 0.05) 0%, transparent 50%),
       radial-gradient(circle at 75% 75%, rgba(255, 107, 0, 0.05) 0%, transparent 50%);
+    overflow-x: hidden;
+  }
+
+  /* Контейнер для зубов */
+  #teeth-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10000;
+    overflow: hidden;
+  }
+
+  .tooth {
+    position: absolute;
+    font-size: 24px;
+    user-select: none;
+    pointer-events: none;
+    z-index: 10000;
+    transition: opacity 3s ease;
+    text-shadow: 0 0 8px rgba(255, 107, 0, 0.7);
   }
 
   .container {
@@ -221,6 +244,7 @@
     box-shadow: var(--shadow);
     position: relative;
     cursor: pointer;
+    user-select: none;
   }
 
   .feature-card::before {
@@ -1006,6 +1030,9 @@
 </style>
 </head>
 <body>
+  <!-- Контейнер для зубов -->
+  <div id="teeth-container"></div>
+
   <header>
     <div class="container">
       <div class="profile-section">
@@ -1192,6 +1219,139 @@
   </footer>
 
   <script>
+    // СИСТЕМА ПАДАЮЩИХ ЗУБОВ
+    class ToothSystem {
+      constructor() {
+        this.teeth = [];
+        this.container = document.getElementById('teeth-container');
+        this.gravity = 0.2;
+        this.friction = 0.98;
+        this.maxTeeth = 100; // Максимальное количество зубов на экране
+        this.lastTime = 0;
+        
+        // Запускаем анимацию
+        this.animate();
+      }
+      
+      createTooth(x, y) {
+        // Если слишком много зубов, удаляем самые старые
+        if (this.teeth.length > this.maxTeeth) {
+          const removedTooth = this.teeth.shift();
+          if (removedTooth && removedTooth.element) {
+            removedTooth.element.remove();
+          }
+        }
+        
+        const tooth = {
+          x: x,
+          y: y,
+          vx: (Math.random() - 0.5) * 8, // Случайная начальная скорость по X
+          vy: (Math.random() - 0.5) * 8, // Случайная начачная скорость по Y
+          rotation: Math.random() * 360,
+          rotationSpeed: (Math.random() - 0.5) * 10,
+          size: 20 + Math.random() * 15,
+          opacity: 1,
+          element: document.createElement('div'),
+          createdAt: Date.now(),
+          settled: false,
+          settledTime: 0
+        };
+        
+        tooth.element.className = 'tooth';
+        tooth.element.innerHTML = '🦷';
+        tooth.element.style.fontSize = `${tooth.size}px`;
+        tooth.element.style.left = `${tooth.x}px`;
+        tooth.element.style.top = `${tooth.y}px`;
+        tooth.element.style.transform = `rotate(${tooth.rotation}deg)`;
+        tooth.element.style.opacity = tooth.opacity;
+        
+        this.container.appendChild(tooth.element);
+        this.teeth.push(tooth);
+        
+        return tooth;
+      }
+      
+      updateTooth(tooth, deltaTime) {
+        // Применяем гравитацию
+        tooth.vy += this.gravity;
+        
+        // Обновляем позицию
+        tooth.x += tooth.vx;
+        tooth.y += tooth.vy;
+        
+        // Обновляем вращение
+        tooth.rotation += tooth.rotationSpeed;
+        
+        // Проверяем столкновения с границами экрана
+        if (tooth.x <= 0) {
+          tooth.x = 0;
+          tooth.vx *= -0.8; // Отскок от левой границы
+        } else if (tooth.x >= window.innerWidth - tooth.size) {
+          tooth.x = window.innerWidth - tooth.size;
+          tooth.vx *= -0.8; // Отскок от правой границы
+        }
+        
+        // Столкновение с нижней границей
+        if (tooth.y >= window.innerHeight - tooth.size) {
+          tooth.y = window.innerHeight - tooth.size;
+          tooth.vy *= -0.5; // Отскок от нижней границы
+          tooth.vx *= this.friction; // Трение о поверхность
+          
+          // Если скорость достаточно мала, считаем что зуб "успокоился"
+          if (Math.abs(tooth.vy) < 0.5 && Math.abs(tooth.vx) < 0.5 && !tooth.settled) {
+            tooth.settled = true;
+            tooth.settledTime = Date.now();
+          }
+        }
+        
+        // Обновляем элемент DOM
+        tooth.element.style.left = `${tooth.x}px`;
+        tooth.element.style.top = `${tooth.y}px`;
+        tooth.element.style.transform = `rotate(${tooth.rotation}deg)`;
+        
+        // Медленное исчезновение после того как зуб успокоился
+        if (tooth.settled) {
+          const timeSinceSettled = Date.now() - tooth.settledTime;
+          if (timeSinceSettled > 2000) { // Начинаем исчезать через 2 секунды после остановки
+            const fadeProgress = Math.min(1, (timeSinceSettled - 2000) / 5000); // Полное исчезновение за 5 секунд
+            tooth.opacity = 1 - fadeProgress;
+            tooth.element.style.opacity = tooth.opacity;
+          }
+        }
+      }
+      
+      animate(currentTime = 0) {
+        const deltaTime = Math.min(16, currentTime - this.lastTime);
+        this.lastTime = currentTime;
+        
+        // Обновляем все зубы
+        for (let i = this.teeth.length - 1; i >= 0; i--) {
+          const tooth = this.teeth[i];
+          this.updateTooth(tooth, deltaTime);
+          
+          // Удаляем зубы, которые полностью исчезли
+          if (tooth.opacity <= 0) {
+            tooth.element.remove();
+            this.teeth.splice(i, 1);
+          }
+        }
+        
+        requestAnimationFrame((time) => this.animate(time));
+      }
+      
+      // Создание нескольких зубов в определенной области
+      createTeethBurst(count, x, y, areaWidth, areaHeight) {
+        for (let i = 0; i < count; i++) {
+          const toothX = x + Math.random() * areaWidth - areaWidth / 2;
+          const toothY = y + Math.random() * areaHeight - areaHeight / 2;
+          this.createTooth(toothX, toothY);
+        }
+      }
+    }
+
+    // Инициализация системы зубов
+    const toothSystem = new ToothSystem();
+
     // Анимация печатающегося текста для заголовков
     function initTypingTitles() {
       const typingTitles = document.querySelectorAll('.typing-title');
@@ -1399,6 +1559,25 @@
       }
     });
 
+    // Добавляем обработчики кликов на карточки (кроме галереи)
+    document.querySelectorAll('.feature-card').forEach(card => {
+      card.addEventListener('click', (e) => {
+        // Получаем позицию карточки
+        const rect = card.getBoundingClientRect();
+        const x = rect.left + rect.width / 2;
+        const y = rect.top + rect.height / 2;
+        
+        // Создаем "взрыв" зубов из центра карточки
+        toothSystem.createTeethBurst(
+          10, // количество зубов
+          x, // позиция X
+          y, // позиция Y
+          rect.width * 0.8, // область разброса по ширине
+          rect.height * 0.8 // область разброса по высоте
+        );
+      });
+    });
+
     // Simple animation on scroll
     const observerOptions = {
       threshold: 0.1,
@@ -1470,4 +1649,3 @@
   </script>
 </body>
 </html>
-
