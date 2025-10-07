@@ -270,6 +270,29 @@
     border-radius: var(--radius);
   }
 
+  /* Стили для счетчиков */
+  .counter-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 15px;
+  }
+
+  .counter {
+    font-size: 1.4rem;
+    color: var(--accent);
+    background: var(--terminal-bg);
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--glow);
+    transition: var(--transition);
+    font-weight: bold;
+  }
+
+  .feature-card:hover .counter {
+    box-shadow: 0 0 10px rgba(255, 107, 0, 0.7);
+  }
+
   /* КАРТОЧКА ГАЛЕРЕИ */
   .gallery-card {
     background: var(--card-bg);
@@ -790,6 +813,11 @@
       padding: 10px;
     }
     
+    .counter {
+      font-size: 1.2rem;
+      padding: 6px 10px;
+    }
+    
     .case h3 {
       font-size: 1.2rem;
       padding: 12px;
@@ -925,6 +953,11 @@
       font-size: 1.6rem;
     }
     
+    .counter {
+      font-size: 1.1rem;
+      padding: 5px 8px;
+    }
+    
     .profile-image {
       width: 120px;
       height: 120px;
@@ -1008,6 +1041,9 @@
           <div class="feature-icon">⚡</div>
           <h3 class="feature-title">Fast Turnaround</h3>
           <p class="feature-description">10 minutes to 10 hours depending on case complexity</p>
+          <div class="counter-container">
+            <div class="counter" data-target="3094">0</div>
+          </div>
         </div>
         
         <div class="feature-card">
@@ -1026,6 +1062,9 @@
           <div class="feature-icon">👨‍🏫</div>
           <h3 class="feature-title">Teaching Experience</h3>
           <p class="feature-description">Courses on Exocad, MiYO zirconia staining techniques</p>
+          <div class="counter-container">
+            <div class="counter" data-target="8">0</div>
+          </div>
         </div>
           
         <div class="feature-card">
@@ -1195,6 +1234,44 @@
 
       typingTitles.forEach(title => {
         typingObserver.observe(title);
+      });
+    }
+
+    // Анимация счетчиков
+    function initCounters() {
+      const counters = document.querySelectorAll('.counter');
+      
+      const counterObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const counter = entry.target;
+            const target = parseInt(counter.getAttribute('data-target'));
+            const duration = 2000; // 2 seconds
+            const increment = target / (duration / 16); // 60fps
+            
+            let current = 0;
+            
+            const updateCounter = () => {
+              current += increment;
+              if (current < target) {
+                counter.textContent = Math.floor(current);
+                setTimeout(updateCounter, 16);
+              } else {
+                counter.textContent = target;
+              }
+            };
+            
+            updateCounter();
+            counterObserver.unobserve(counter);
+          }
+        });
+      }, { 
+        threshold: 0.5,
+        rootMargin: '0px 0px -50px 0px'
+      });
+
+      counters.forEach(counter => {
+        counterObserver.observe(counter);
       });
     }
 
@@ -1384,9 +1461,10 @@
       });
     });
 
-    // Инициализация анимации печатающихся заголовков и галереи
+    // Инициализация анимации печатающихся заголовков, счетчиков и галереи
     document.addEventListener('DOMContentLoaded', () => {
       initTypingTitles();
+      initCounters();
       initGallery();
     });
   </script>
