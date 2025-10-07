@@ -208,6 +208,99 @@
     font-weight: 600;
   }
 
+  /* CONTACTS SECTION */
+  #contacts {
+    padding: 80px 0;
+    position: relative;
+  }
+
+  .contacts-container {
+    position: relative;
+    z-index: 2;
+  }
+
+  .contacts-blur-box {
+    background: color-mix(in srgb, var(--card-bg) 85%, transparent);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 60px 40px;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .contacts-blur-box.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .contacts-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--text);
+  }
+
+  .contacts-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-light);
+    margin-bottom: 50px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .social-links {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+  }
+
+  .social-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: var(--text);
+    transition: var(--transition);
+    padding: 25px;
+    border-radius: var(--radius);
+    background: color-mix(in srgb, var(--card-bg) 95%, var(--accent) 5%);
+    border: 1px solid var(--border);
+    min-width: 140px;
+  }
+
+  .social-link:hover {
+    transform: translateY(-5px);
+    background: color-mix(in srgb, var(--card-bg) 85%, var(--accent) 15%);
+    border-color: var(--accent);
+  }
+
+  .social-icon {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    transition: var(--transition);
+  }
+
+  .social-link:hover .social-icon {
+    transform: scale(1.1);
+  }
+
+  .social-name {
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 5px;
+  }
+
+  .social-handle {
+    font-size: 0.9rem;
+    color: var(--text-light);
+  }
+
   /* FOOTER */
   footer {
     background: var(--card-bg);
@@ -246,6 +339,19 @@
     }
     iframe {
       height: 300px;
+    }
+    .contacts-blur-box {
+      padding: 40px 20px;
+    }
+    .social-links {
+      gap: 15px;
+    }
+    .social-link {
+      min-width: 120px;
+      padding: 20px 15px;
+    }
+    .contacts-title {
+      font-size: 1.8rem;
     }
   }
 </style>
@@ -356,6 +462,37 @@
       </div>
     </section>
 
+    <!-- NEW CONTACTS SECTION -->
+    <section id="contacts">
+      <div class="contacts-container">
+        <div class="contacts-blur-box">
+          <h2 class="contacts-title">Get In Touch</h2>
+          <p class="contacts-subtitle">Let's discuss your next dental project. Reach out through any of these platforms:</p>
+          
+          <div class="social-links">
+            <a href="https://t.me/hey_zaur" class="social-link" target="_blank">
+              <div class="social-icon">📱</div>
+              <div class="social-name">Telegram</div>
+              <div class="social-handle">@hey_zaur</div>
+            </a>
+            
+            <a href="https://instagram.com/hey_zaur" class="social-link" target="_blank">
+              <div class="social-icon">📸</div>
+              <div class="social-name">Instagram</div>
+              <div class="social-handle">@hey_zaur</div>
+            </a>
+            
+            <a href="https://wa.me/79995334697" class="social-link" target="_blank">
+              <div class="social-icon">💬</div>
+              <div class="social-name">WhatsApp</div>
+              <div class="social-handle">+7 999 533 46 97</div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
 
   <footer>
     <div class="container">
@@ -365,7 +502,7 @@
           <a href="#about">About</a>
           <a href="#work">Work</a>
           <a href="#cases">Cases</a>
-          <a href="#contact">Contact</a>
+          <a href="#contacts">Contact</a>
         </div>
         <p class="copyright">© 2025 Zaur Magomedov. All rights reserved.</p>
       </div>
@@ -384,6 +521,11 @@
         if (entry.isIntersecting) {
           entry.target.style.opacity = '1';
           entry.target.style.transform = 'translateY(0)';
+          
+          // Special handling for contacts blur box
+          if (entry.target.classList.contains('contacts-blur-box')) {
+            entry.target.classList.add('visible');
+          }
         }
       });
     }, observerOptions);
@@ -394,6 +536,40 @@
       section.style.transform = 'translateY(20px)';
       section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
       observer.observe(section);
+    });
+
+    // Special observer for contacts blur box
+    const contactsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, 300);
+        }
+      });
+    }, {
+      threshold: 0.3,
+      rootMargin: '0px 0px -100px 0px'
+    });
+
+    // Observe contacts blur box
+    const contactsBox = document.querySelector('.contacts-blur-box');
+    if (contactsBox) {
+      contactsObserver.observe(contactsBox);
+    }
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
     });
   </script>
 </body>
