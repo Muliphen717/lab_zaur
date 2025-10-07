@@ -64,17 +64,21 @@
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     border-bottom: 1px solid color-mix(in srgb, var(--border) 30%, transparent);
     z-index: 1000;
-    padding: 15px 0;
+    padding: 8px 0; /* Уменьшил паддинг */
     transition: var(--transition);
+    height: 60px; /* Фиксированная высота */
+    display: flex;
+    align-items: center;
   }
 
   .nav-container {
-    max-width: 700px;
+    max-width: 1100px;
     margin: 0 auto;
     padding: 0 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
   }
 
   .logo {
@@ -88,7 +92,7 @@
   }
 
   .logo-image {
-    height: 120px;
+    height: 44px; /* Уменьшил логотип для компактности */
     width: auto;
     transition: var(--transition);
   }
@@ -101,12 +105,17 @@
     display: none;
     background: none;
     border: none;
-    font-size: 1.5rem;
+    font-size: 1.3rem; /* Уменьшил размер кнопки */
     color: var(--text);
     cursor: pointer;
     padding: 5px;
     z-index: 1001;
     transition: var(--transition);
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .mobile-menu-btn.active {
@@ -125,6 +134,7 @@
     transition: var(--transition);
     padding: 5px 10px;
     border-radius: 6px;
+    font-size: 0.95rem; /* Уменьшил размер шрифта */
   }
 
   .nav-links a:hover {
@@ -140,10 +150,11 @@
 
   header {
     background: linear-gradient(135deg, var(--card-bg) 0%, color-mix(in srgb, var(--card-bg) 95%, var(--accent) 5%) 100%);
-    padding: 80px 0 60px;
+    padding: 60px 0 40px; /* Уменьшил отступы чтобы аватарка была выше */
     text-align: center;
     transition: var(--transition);
     border-bottom: 1px solid var(--border);
+    margin-top: -10px; /* Компенсируем уменьшенную шапку */
   }
 
   .profile-section {
@@ -445,20 +456,19 @@
   }
 
   /* МОБИЛЬНАЯ АДАПТАЦИЯ */
-  @media (max-width: 434px) {
+  @media (max-width: 768px) {
     body {
-      padding-top: 60px;
+      padding-top: 50px; /* Уменьшил отступ для тела */
     }
     
     .nav-header {
-      padding: 10px 0;
-      background: color-mix(in srgb, var(--card-bg) 90%, transparent);
-      backdrop-filter: blur(25px) saturate(200%);
-      -webkit-backdrop-filter: blur(25px) saturate(200%);
+      padding: 5px 0; /* Еще уменьшил паддинг на мобильных */
+      height: 50px; /* Уменьшил высоту на мобильных */
     }
     
     .mobile-menu-btn {
-      display: block;
+      display: flex;
+      font-size: 1.2rem;
     }
     
     .nav-links {
@@ -480,17 +490,18 @@
     
     .nav-links.active {
       max-height: 300px;
-      padding: 20px;
+      padding: 15px; /* Уменьшил паддинг для меню */
     }
     
     .nav-links a {
-      padding: 12px 15px;
+      padding: 10px 15px; /* Уменьшил паддинг для ссылок */
       border-radius: 8px;
       text-align: center;
       opacity: 0;
       transform: translateY(-10px);
       transition: opacity 0.4s ease, transform 0.4s ease, background-color 0.3s ease;
       transition-delay: 0s;
+      font-size: 0.9rem;
     }
     
     .nav-links.active a {
@@ -505,7 +516,7 @@
     
     /* Увеличиваем логотип на мобильной версии */
     .logo-image {
-      height: 120px; /* Такой же размер как на десктопе */
+      height: 40px; /* Компактный размер на мобильных */
     }
     
     h1 {
@@ -572,9 +583,22 @@
       flex-direction: column;
       gap: 15px;
     }
+    
+    header {
+      padding: 50px 0 30px; /* Уменьшил отступы хедера на мобильных */
+      margin-top: -5px; /* Компенсация для мобильных */
+    }
   }
 
   @media (max-width: 480px) {
+    body {
+      padding-top: 45px;
+    }
+    
+    .nav-header {
+      height: 45px;
+    }
+    
     h1 {
       font-size: 1.8rem;
     }
@@ -603,7 +627,7 @@
     }
     
     header {
-      padding: 60px 0 40px;
+      padding: 45px 0 25px;
     }
     
     main {
@@ -616,7 +640,7 @@
     
     /* Сохраняем размер логотипа на очень маленьких экранах */
     .logo-image {
-      height: 110px;
+      height: 38px;
     }
   }
 </style>
