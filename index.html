@@ -754,52 +754,6 @@
     animation: flicker 3s infinite;
   }
 
-  
-  /* СТАТИСТИКА */
-  .stats-section {
-    margin: 40px 0;
-    padding: 30px;
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    text-align: center;
-  }
-
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 30px;
-    margin-top: 20px;
-  }
-
-  .stat-card {
-    background: var(--terminal-bg);
-    padding: 25px 20px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    transition: var(--transition);
-  }
-
-  .stat-card:hover {
-    border-color: var(--accent);
-    transform: translateY(-3px);
-    box-shadow: var(--glow);
-  }
-
-  .stat-number {
-    font-size: 3rem;
-    font-weight: 400;
-    color: var(--accent);
-    margin-bottom: 10px;
-    transition: var(--transition);
-  }
-
-  .stat-label {
-    font-size: 1.2rem;
-    color: var(--text-light);
-  }
-
-
   @media (max-width: 768px) {
     body {
       font-size: 1.1rem;
@@ -935,18 +889,6 @@
     .gallery-title {
       font-size: 1.2rem;
     }
-
-  
-  
-
-    .stats-grid {
-      grid-template-columns: 1fr;
-      gap: 20px;
-    }
-
-    .stat-number {
-      font-size: 2.5rem;
-    }
   }
 
   @media (max-width: 480px) {
@@ -1027,31 +969,10 @@
     .gallery-description {
       font-size: 1rem;
     }
-
-    .swipe-indicator {
-      bottom: 20px;
-      font-size: 0.9rem;
-      padding: 8px 16px;
-    }
-
-    .swipe-icon {
-      font-size: 1.7rem;
-    }
-
-    .stat-number {
-      font-size: 2rem;
-    }
-
-    .stat-label {
-      font-size: 1rem;
-    }
   }
 </style>
 </head>
 <body>
-
-  </div>
-
   <header>
     <div class="container">
       <div class="profile-section">
@@ -1067,24 +988,7 @@
   </header>
 
   <main class="container">
-    <!-- СЕКЦИЯ СТАТИСТИКИ -->
-    <section id="stats" class="mobile-hidden">
-      <div class="stats-section">
-        <h2 class="section-title typing-title">Achievements</h2>
-        <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-number" id="studentsCount">0</div>
-            <div class="stat-label">Trained Students</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-number" id="worksCount">0</div>
-            <div class="stat-label">Completed Works</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="about" class="mobile-hidden">
+    <section id="about">
       <h2 class="section-title typing-title">About Me</h2>
       <div class="about-text">
         <p>I'm a digital smile designer with <span class="terminal-highlight">7 years of experience</span> in CAD/CAM dentistry, specializing in <span class="terminal-highlight">Exocad</span>. I create all types of restorations, including <span class="terminal-highlight">All-on-4, All-on-X</span>, and full-mouth rehabilitations on <span class="terminal-highlight">monolithic zirconia</span>.</p>
@@ -1139,7 +1043,7 @@
       </div>
     </section>
 
-    <section id="cases" class="mobile-hidden">
+    <section id="cases">
       <h2 class="section-title typing-title">Cases</h2>
       <div class="cases-grid">
         <div class="case">
@@ -1180,7 +1084,7 @@
     </section>
 
     <!-- CONTACTS SECTION -->
-    <section id="contacts" class="mobile-hidden">
+    <section id="contacts">
       <div class="contacts-container">
         <div class="contacts-blur-box">
           <h2 class="contacts-title typing-title">Get In Touch</h2>
@@ -1480,99 +1384,12 @@
       });
     });
 
-    // АНИМАЦИЯ СЧЕТЧИКОВ
-    function animateCounter(element, target, duration = 2000) {
-      const start = 0;
-      const increment = target / (duration / 16);
-      let current = start;
-      
-      const timer = setInterval(() => {
-        current += increment;
-        if (current >= target) {
-          clearInterval(timer);
-          current = target;
-        }
-        element.textContent = Math.floor(current).toLocaleString();
-      }, 16);
-    }
-
-    // ЗАПУСК СЧЕТЧИКОВ ПРИ ПОЯВЛЕНИИ В ОБЛАСТИ ВИДИМОСТИ
-    const statsObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const studentsCount = document.getElementById('studentsCount');
-          const worksCount = document.getElementById('worksCount');
-          
-          animateCounter(studentsCount, 7, 1500);
-          animateCounter(worksCount, 3092, 2000);
-          
-          statsObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.5 });
-
-   
-        
-        // Отслеживаем скролл для показа контента
-        let hasScrolled = false;
-        
-        const handleScroll = () => {
-          if (!hasScrolled && window.scrollY > 100) {
-            hasScrolled = true;
-            
-            // Показываем секции с анимацией
-            hiddenSections.forEach((section, index) => {
-              setTimeout(() => {
-                section.style.display = 'block';
-                section.style.opacity = '0';
-                section.style.transform = 'translateY(20px)';
-                section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                
-                // Запускаем анимацию появления
-                setTimeout(() => {
-                  section.style.opacity = '1';
-                  section.style.transform = 'translateY(0)';
-                }, 100);
-              }, index * 200);
-            });
-            
-            // Скрываем индикатор свайпа
-            swipeIndicator.style.opacity = '0';
-            swipeIndicator.style.transition = 'opacity 0.5s ease';
-            setTimeout(() => {
-              swipeIndicator.style.display = 'none';
-            }, 500);
-            
-            // Убираем обработчик скролла
-            window.removeEventListener('scroll', handleScroll);
-          }
-        };
-        
-        window.addEventListener('scroll', handleScroll);
-      } else {
-        // На десктопе показываем все секции
-        hiddenSections.forEach(section => {
-          section.style.display = 'block';
-        });
-        swipeIndicator.style.display = 'none';
-      }
-    }
-
-    // Наблюдатель для секции статистики
-    const statsSection = document.getElementById('stats');
-    if (statsSection) {
-      statsObserver.observe(statsSection);
-    }
-
-    // Инициализация при загрузке
+    // Инициализация анимации печатающихся заголовков и галереи
     document.addEventListener('DOMContentLoaded', () => {
       initTypingTitles();
       initGallery();
-      handleMobileContent();
-      
-      // Обработчик изменения размера окна
-      window.addEventListener('resize', handleMobileContent);
     });
   </script>
 </body>
 </html>
+
