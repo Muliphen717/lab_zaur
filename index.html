@@ -126,6 +126,7 @@
     letter-spacing: 0.08em;
     color: var(--text);
     position: relative;
+    overflow: hidden;
   }
 
   .section-title::after {
@@ -137,6 +138,29 @@
     height: 3px;
     background: linear-gradient(90deg, var(--accent) 0%, var(--accent-light) 100%);
     border-radius: 2px;
+  }
+
+  /* Стили для анимированного заголовка */
+  .typing-title {
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .typing-cursor {
+    display: inline-block;
+    width: 3px;
+    background-color: var(--accent);
+    margin-left: 2px;
+    animation: blink 1s infinite;
+    vertical-align: baseline;
+    height: 1.2em;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
   }
 
   .about-text p {
@@ -425,6 +449,12 @@
     .copyright {
       font-size: 0.8rem;
     }
+    
+    /* На мобильных делаем анимацию более заметной */
+    .typing-cursor {
+      width: 2px;
+      height: 1.1em;
+    }
   }
 
   @media (max-width: 480px) {
@@ -450,6 +480,19 @@
     .social-icon {
       font-size: 1.8rem;
     }
+    .profile-image {
+      width: 150px;
+      height: 150px;
+    }
+    header {
+      padding: 80px 0 40px;
+    }
+    main {
+      padding: 50px 0;
+    }
+    section {
+      margin-bottom: 60px;
+    }
   }
 </style>
 </head>
@@ -472,7 +515,7 @@
 
   <main class="container">
     <section id="about">
-      <h2 class="section-title">About Me</h2>
+      <h2 class="section-title typing-title">About Me</h2>
       <div class="about-text">
         <p>I'm a digital smile designer with <span class="highlight">7 years of experience</span> in CAD/CAM dentistry, specializing in <span class="highlight">Exocad</span>. I create all types of restorations, including <span class="highlight">All-on-4, All-on-X</span>, and full-mouth rehabilitations on <span class="highlight">monolithic zirconia</span>.</p>
         
@@ -520,7 +563,7 @@
     </section>
 
     <section id="cases">
-      <h2 class="section-title">Cases</h2>
+      <h2 class="section-title typing-title">Cases</h2>
       <div class="cases-grid">
         <div class="case">
           <iframe src="cases/All-in-4 Upper Lower.html"></iframe>
@@ -563,7 +606,7 @@
     <section id="contacts">
       <div class="contacts-container">
         <div class="contacts-blur-box">
-          <h2 class="contacts-title">Get In Touch</h2>
+          <h2 class="contacts-title typing-title">Get In Touch</h2>
           <p class="contacts-subtitle">Let's discuss your next dental project. Reach out through any of these platforms:</p>
           
           <div class="social-links">
@@ -607,6 +650,51 @@
   </footer>
 
   <script>
+    // Анимация печатающегося текста для заголовков
+    function initTypingTitles() {
+      const typingTitles = document.querySelectorAll('.typing-title');
+      
+      const typingObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const title = entry.target;
+            const text = title.textContent;
+            title.textContent = '';
+            
+            const cursor = document.createElement('span');
+            cursor.className = 'typing-cursor';
+            title.appendChild(cursor);
+            
+            let i = 0;
+            const typeWriter = () => {
+              if (i < text.length) {
+                title.insertBefore(document.createTextNode(text[i]), cursor);
+                i++;
+                setTimeout(typeWriter, 100); // скорость печати
+              } else {
+                // После завершения печати оставляем курсор мигающим на 2 секунды, затем убираем
+                setTimeout(() => {
+                  cursor.style.animation = 'none';
+                  setTimeout(() => cursor.remove(), 500);
+                }, 2000);
+              }
+            };
+            
+            // Задержка перед началом печати
+            setTimeout(typeWriter, 300);
+            typingObserver.unobserve(title);
+          }
+        });
+      }, { 
+        threshold: 0.5,
+        rootMargin: '0px 0px -50px 0px'
+      });
+
+      typingTitles.forEach(title => {
+        typingObserver.observe(title);
+      });
+    }
+
     // Simple animation on scroll
     const observerOptions = {
       threshold: 0.1,
@@ -668,6 +756,9 @@
         }
       });
     });
+
+    // Инициализация анимации печатающихся заголовков
+    document.addEventListener('DOMContentLoaded', initTypingTitles);
   </script>
 </body>
 </html>
