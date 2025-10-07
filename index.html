@@ -4,9 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Zaur Magomedov | Digital Smile Designer & CAD/CAM Specialist</title>
- <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Пиксельные шрифты -->
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen&family=VT323&display=swap" rel="stylesheet">
   <style>
   :root {
     --bg: #fefefe;
@@ -20,6 +22,7 @@
     --radius: 14px;
     --transition: all 0.3s ease;
     --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    --terminal-bg: #0a0a0a;
   }
 
   @media (prefers-color-scheme: dark) {
@@ -33,6 +36,7 @@
       --card-bg: #1a1a1a;
       --border: #333333;
       --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+      --terminal-bg: #000000;
     }
   }
 
@@ -110,6 +114,13 @@
     font-size: 1.1rem;
   }
 
+  .tagline.terminal-mode {
+    font-family: 'VT323', monospace;
+    font-size: 1.3rem;
+    color: var(--accent);
+    text-shadow: 0 0 5px rgba(255, 107, 0, 0.3);
+  }
+
   main {
     padding: 70px 0;
   }
@@ -163,10 +174,58 @@
     50% { opacity: 0; }
   }
 
+  /* ПИКСЕЛЬНЫЕ ШРИФТЫ ДЛЯ ОПИСАНИЙ */
+  .terminal-text {
+    font-family: 'VT323', 'Press Start 2P', 'Silkscreen', monospace;
+    font-size: 1.2rem;
+    line-height: 1.4;
+    letter-spacing: 0.5px;
+    color: var(--text);
+  }
+
+  .terminal-description {
+    font-family: 'VT323', monospace;
+    font-size: 1.1rem;
+    line-height: 1.4;
+    letter-spacing: 0.5px;
+    color: var(--text-light);
+  }
+
+  .terminal-highlight {
+    font-family: 'VT323', monospace;
+    color: var(--accent);
+    text-shadow: 0 0 5px rgba(255, 107, 0, 0.3);
+    background-color: rgba(255, 107, 0, 0.1);
+    padding: 2px 6px;
+    border-radius: 3px;
+    border: 1px solid rgba(255, 107, 0, 0.2);
+  }
+
   .about-text p {
     margin-bottom: 20px;
     font-size: 1.05rem;
     color: var(--text-light);
+  }
+
+  .about-text.terminal-mode p {
+    font-family: 'VT323', monospace;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    color: var(--text);
+    background: var(--terminal-bg);
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+    margin-bottom: 15px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .about-text.terminal-mode p::before {
+    content: "> ";
+    color: var(--accent);
+    font-weight: bold;
   }
 
   .highlight {
@@ -217,6 +276,18 @@
     font-size: 0.95rem;
   }
 
+  .feature-description.terminal-mode {
+    font-family: 'VT323', monospace;
+    font-size: 1.1rem;
+    line-height: 1.4;
+    color: var(--text);
+    background: var(--terminal-bg);
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid var(--border);
+    margin-top: 10px;
+  }
+
   /* CASES */
   .cases-grid {
     display: grid;
@@ -253,6 +324,18 @@
   .case h3 {
     font-size: 1.2rem;
     font-weight: 600;
+  }
+
+  .case h3.terminal-mode {
+    font-family: 'VT323', monospace;
+    font-size: 1.4rem;
+    color: var(--accent);
+    text-shadow: 0 0 5px rgba(255, 107, 0, 0.3);
+    background: var(--terminal-bg);
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid rgba(255, 107, 0, 0.3);
+    margin: 10px 0;
   }
 
   /* CONTACTS SECTION */
@@ -299,6 +382,16 @@
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
+  }
+
+  .contacts-subtitle.terminal-mode {
+    font-family: 'VT323', monospace;
+    font-size: 1.3rem;
+    color: var(--text);
+    background: var(--terminal-bg);
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
   }
 
   .social-links {
@@ -352,6 +445,17 @@
     color: var(--text-light);
   }
 
+  .social-name.terminal-mode,
+  .social-handle.terminal-mode {
+    font-family: 'VT323', monospace;
+    font-size: 1.1rem;
+  }
+
+  .social-handle.terminal-mode {
+    color: var(--accent);
+    text-shadow: 0 0 3px rgba(255, 107, 0, 0.3);
+  }
+
   /* FOOTER */
   footer {
     background: linear-gradient(135deg, var(--card-bg) 0%, color-mix(in srgb, var(--card-bg) 95%, var(--accent) 5%) 100%);
@@ -379,9 +483,23 @@
     color: var(--accent);
   }
 
+  .footer-links a.terminal-mode {
+    font-family: 'VT323', monospace;
+    font-size: 1.1rem;
+    color: var(--accent);
+    text-shadow: 0 0 3px rgba(255, 107, 0, 0.3);
+  }
+
   .copyright {
     font-size: 0.9rem;
     color: var(--text-light);
+  }
+
+  .copyright.terminal-mode {
+    font-family: 'VT323', monospace;
+    font-size: 1rem;
+    color: var(--accent);
+    text-shadow: 0 0 3px rgba(255, 107, 0, 0.3);
   }
 
   @media (max-width: 768px) {
@@ -394,6 +512,9 @@
     .tagline {
       font-size: 0.9rem;
     }
+    .tagline.terminal-mode {
+      font-size: 1.1rem;
+    }
     .section-title {
       font-size: 1.3rem;
       margin-bottom: 30px;
@@ -401,14 +522,26 @@
     .about-text p {
       font-size: 0.95rem;
     }
+    .about-text.terminal-mode p {
+      font-size: 1rem;
+      padding: 15px;
+    }
     .feature-title {
       font-size: 1rem;
     }
     .feature-description {
       font-size: 0.85rem;
     }
+    .feature-description.terminal-mode {
+      font-size: 1rem;
+      padding: 12px;
+    }
     .case h3 {
       font-size: 1rem;
+    }
+    .case h3.terminal-mode {
+      font-size: 1.2rem;
+      padding: 12px;
     }
     iframe {
       height: 300px;
@@ -430,6 +563,10 @@
       font-size: 0.9rem;
       margin-bottom: 30px;
     }
+    .contacts-subtitle.terminal-mode {
+      font-size: 1.1rem;
+      padding: 15px;
+    }
     .social-icon {
       font-size: 2rem;
       margin-bottom: 10px;
@@ -440,14 +577,24 @@
     .social-handle {
       font-size: 0.8rem;
     }
+    .social-name.terminal-mode,
+    .social-handle.terminal-mode {
+      font-size: 1rem;
+    }
     footer p {
       font-size: 0.9rem;
     }
     .footer-links a {
       font-size: 0.9rem;
     }
+    .footer-links a.terminal-mode {
+      font-size: 1rem;
+    }
     .copyright {
       font-size: 0.8rem;
+    }
+    .copyright.terminal-mode {
+      font-size: 0.9rem;
     }
     
     /* На мобильных делаем анимацию более заметной */
@@ -466,6 +613,9 @@
     }
     .tagline {
       font-size: 0.85rem;
+    }
+    .tagline.terminal-mode {
+      font-size: 1rem;
     }
     .section-title {
       font-size: 1.2rem;
@@ -506,8 +656,8 @@
         
         <div class="header-text">
           <h1>Zaur Magomedov</h1>
-          <p class="subtitle">Digital Smile Designer | CAD/CAM Dental Technician</p>
-          <p class="tagline">Remote Work • 7+ Years Experience • Fast Turnaround</p>
+          <p class="subtitle terminal-text">Digital Smile Designer | CAD/CAM Dental Technician</p>
+          <p class="tagline terminal-mode">Remote Work • 7+ Years Experience • Fast Turnaround</p>
         </div>
       </div>
     </div>
@@ -516,48 +666,48 @@
   <main class="container">
     <section id="about">
       <h2 class="section-title typing-title">About Me</h2>
-      <div class="about-text">
-        <p>I'm a digital smile designer with <span class="highlight">7 years of experience</span> in CAD/CAM dentistry, specializing in <span class="highlight">Exocad</span>. I create all types of restorations, including <span class="highlight">All-on-4, All-on-X</span>, and full-mouth rehabilitations on <span class="highlight">monolithic zirconia</span>.</p>
+      <div class="about-text terminal-mode">
+        <p>I'm a digital smile designer with <span class="terminal-highlight">7 years of experience</span> in CAD/CAM dentistry, specializing in <span class="terminal-highlight">Exocad</span>. I create all types of restorations, including <span class="terminal-highlight">All-on-4, All-on-X</span>, and full-mouth rehabilitations on <span class="terminal-highlight">monolithic zirconia</span>.</p>
         
         <p>I own a fully equipped dental laboratory in my hometown, which allows me to perform the entire production cycle myself — from digital design to final finishing. This gives me a clear understanding of how each restoration should fit and function inside the patient's mouth.</p>
         
         <p>I hold a degree in Dentistry, giving me insight into both the technical and clinical perspectives of each case.</p>
         
-        <p>Additionally, I've organized and taught courses for beginners on <span class="highlight">Exocad</span>, as well as courses on staining zirconia with <span class="highlight">MiYO colors</span>, sharing my experience as a lecturer with other dental professionals.</p>
+        <p>Additionally, I've organized and taught courses for beginners on <span class="terminal-highlight">Exocad</span>, as well as courses on staining zirconia with <span class="terminal-highlight">MiYO colors</span>, sharing my experience as a lecturer with other dental professionals.</p>
         
-        <p>I work remotely, seven days a week, with turnaround times ranging from <span class="highlight">10 minutes to 10 hours</span>, depending on case complexity (delays are extremely rare).</p>
+        <p>I work remotely, seven days a week, with turnaround times ranging from <span class="terminal-highlight">10 minutes to 10 hours</span>, depending on case complexity (delays are extremely rare).</p>
       </div>
 
       <!-- Key Features -->
       <div class="features">
         <div class="feature-card">
           <div class="feature-icon">⚡</div>
-          <h3 class="feature-title">Fast Turnaround</h3>
-          <p class="feature-description">10 minutes to 10 hours depending on case complexity</p>
+          <h3 class="feature-title terminal-text">Fast Turnaround</h3>
+          <p class="feature-description terminal-mode">10 minutes to 10 hours depending on case complexity</p>
         </div>
         
         <div class="feature-card">
           <div class="feature-icon">🏭</div>
-          <h3 class="feature-title">Full Laboratory</h3>
-          <p class="feature-description">Complete in-house production from design to finishing</p>
+          <h3 class="feature-title terminal-text">Full Laboratory</h3>
+          <p class="feature-description terminal-mode">Complete in-house production from design to finishing</p>
         </div>
         
         <div class="feature-card">
           <div class="feature-icon">🎓</div>
-          <h3 class="feature-title">Dental Education</h3>
-          <p class="feature-description">Degree in Dentistry for clinical understanding</p>
+          <h3 class="feature-title terminal-text">Dental Education</h3>
+          <p class="feature-description terminal-mode">Degree in Dentistry for clinical understanding</p>
         </div>
         
         <div class="feature-card">
           <div class="feature-icon">👨‍🏫</div>
-          <h3 class="feature-title">Teaching Experience</h3>
-          <p class="feature-description">Courses on Exocad, MiYO zirconia staining techniques</p>
+          <h3 class="feature-title terminal-text">Teaching Experience</h3>
+          <p class="feature-description terminal-mode">Courses on Exocad, MiYO zirconia staining techniques</p>
         </div>
           
         <div class="feature-card">
           <div class="feature-icon">🌎</div>
-           <h3 class="feature-title">Remote Work</h3>
-           <p class="feature-description">Available worldwide</p>
+           <h3 class="feature-title terminal-text">Remote Work</h3>
+           <p class="feature-description terminal-mode">Available worldwide</p>
         </div>
       </div>
     </section>
@@ -568,35 +718,35 @@
         <div class="case">
           <iframe src="cases/All-in-4 Upper Lower.html"></iframe>
           <div class="case-content">
-            <h3>All-in-4 Upper & Lower</h3>
+            <h3 class="terminal-mode">All-in-4 Upper & Lower</h3>
           </div>
         </div>
 
         <div class="case">
           <iframe src="cases/All-in-6 Lower.html"></iframe>
           <div class="case-content">
-            <h3>All-in-6 Lower</h3>
+            <h3 class="terminal-mode">All-in-6 Lower</h3>
           </div>
         </div>
 
         <div class="case">
           <iframe src="cases/Mirroring sides.html"></iframe>
           <div class="case-content">
-            <h3>Mirroring Sides</h3>
+            <h3 class="terminal-mode">Mirroring Sides</h3>
           </div>
         </div>
 
         <div class="case">
           <iframe src="cases/Mixed Full Rehabilitation with BOPT.html"></iframe>
           <div class="case-content">
-            <h3>Mixed Full Rehabilitation with BOPT</h3>
+            <h3 class="terminal-mode">Mixed Full Rehabilitation with BOPT</h3>
           </div>
         </div>
         
         <div class="case">
           <iframe src="cases/Upper Jaw Rehabilitation.html"></iframe>
           <div class="case-content">
-            <h3>Upper Jaw Rehabilitation</h3>
+            <h3 class="terminal-mode">Upper Jaw Rehabilitation</h3>
           </div>
         </div>
       </div>
@@ -607,25 +757,25 @@
       <div class="contacts-container">
         <div class="contacts-blur-box">
           <h2 class="contacts-title typing-title">Get In Touch</h2>
-          <p class="contacts-subtitle">Let's discuss your next dental project. Reach out through any of these platforms:</p>
+          <p class="contacts-subtitle terminal-mode">Let's discuss your next dental project. Reach out through any of these platforms:</p>
           
           <div class="social-links">
             <a href="https://t.me/hey_zaur" class="social-link" target="_blank">
               <div class="social-icon">📱</div>
-              <div class="social-name">Telegram</div>
-              <div class="social-handle">@hey_zaur</div>
+              <div class="social-name terminal-mode">Telegram</div>
+              <div class="social-handle terminal-mode">@hey_zaur</div>
             </a>
             
             <a href="https://instagram.com/hey_zaur" class="social-link" target="_blank">
               <div class="social-icon">📸</div>
-              <div class="social-name">Instagram</div>
-              <div class="social-handle">@hey_zaur</div>
+              <div class="social-name terminal-mode">Instagram</div>
+              <div class="social-handle terminal-mode">@hey_zaur</div>
             </a>
             
             <a href="https://wa.me/79995334697" class="social-link" target="_blank">
               <div class="social-icon">💬</div>
-              <div class="social-name">WhatsApp</div>
-              <div class="social-handle">+7 999 533 46 97</div>
+              <div class="social-name terminal-mode">WhatsApp</div>
+              <div class="social-handle terminal-mode">+7 999 533 46 97</div>
             </a>
           </div>
         </div>
@@ -637,14 +787,14 @@
   <footer>
     <div class="container">
       <div class="footer-content">
-        <p>Zaur Magomedov — Digital Smile Design & CAD/CAM Expertise</p>
+        <p class="terminal-text">Zaur Magomedov — Digital Smile Design & CAD/CAM Expertise</p>
         <div class="footer-links">
-          <a href="#about">About</a>
-          <a href="#work">Work</a>
-          <a href="#cases">Cases</a>
-          <a href="#contacts">Contact</a>
+          <a href="#about" class="terminal-mode">About</a>
+          <a href="#work" class="terminal-mode">Work</a>
+          <a href="#cases" class="terminal-mode">Cases</a>
+          <a href="#contacts" class="terminal-mode">Contact</a>
         </div>
-        <p class="copyright">© 2025 Zaur Magomedov. All rights reserved.</p>
+        <p class="copyright terminal-mode">© 2025 Zaur Magomedov. All rights reserved.</p>
       </div>
     </div>
   </footer>
