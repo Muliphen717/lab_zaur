@@ -28,26 +28,6 @@
     --header-height: 80px;
   }
 
-  /* Progress Bar */
-  .reading-progress {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 0%;
-    height: 3px;
-    background: linear-gradient(90deg, var(--accent), var(--accent-light));
-    z-index: 1000;
-    transition: width 0.1s ease;
-    box-shadow: 0 0 10px rgba(255, 107, 0, 0.7);
-  }
-
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
-  }
-
   /* Focus styles for accessibility */
   button:focus-visible,
   a:focus-visible,
@@ -82,9 +62,9 @@
     transition: var(--transition);
     /* Глубокий многослойный фон */
     background-image:
-      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(255, 107, 0, 0.15) 0%, transparent 60%),
-      radial-gradient(ellipse 50% 80% at -10% 50%, rgba(255, 107, 0, 0.1) 0%, transparent 60%),
-      radial-gradient(ellipse 50% 80% at 110% 50%, rgba(255, 107, 0, 0.1) 0%, transparent 60%),
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(255, 107, 0, 0.05) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 80% at -10% 50%, rgba(255, 107, 0, 0.03) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 80% at 110% 50%, rgba(255, 107, 0, 0.03) 0%, transparent 60%),
       linear-gradient(rgba(255, 107, 0, 0.03) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255, 107, 0, 0.03) 1px, transparent 1px);
     background-size:
