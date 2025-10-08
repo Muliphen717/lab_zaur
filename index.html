@@ -460,6 +460,7 @@
     display: flex;
     justify-content: flex-end;
     margin-top: 15px;
+    position: relative;
   }
 
   .counter {
@@ -472,6 +473,44 @@
     box-shadow: var(--glow);
     transition: var(--transition);
     font-weight: bold;
+    position: relative;
+    cursor: help;
+  }
+
+  /* Стили для тултипов */
+  .counter-tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-10px);
+    background: var(--accent);
+    color: var(--bg);
+    padding: 8px 12px;
+    border-radius: var(--radius);
+    font-size: 1rem;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition);
+    z-index: 100;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+  }
+
+  .counter-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: var(--accent);
+  }
+
+  .counter:hover .counter-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(-5px);
   }
 
   .feature-card:hover .counter {
@@ -577,6 +616,14 @@
     overflow: hidden;
     transition: var(--transition);
     box-shadow: var(--shadow);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .case.visible {
+    opacity: 1;
+    transform: translateY(0);
   }
 
   .case:hover {
@@ -591,6 +638,7 @@
     border: none;
     display: block;
     filter: grayscale(30%) contrast(110%);
+    transition: filter 0.3s ease;
   }
 
   .case:hover iframe {
@@ -626,6 +674,7 @@
     backdrop-filter: blur(5px);
     opacity: 0;
     transition: opacity 0.3s ease;
+    touch-action: pan-y pinch-zoom;
   }
 
   .gallery-modal.active {
@@ -690,6 +739,7 @@
     display: flex;
     position: relative;
     overflow: hidden;
+    touch-action: pan-y pinch-zoom;
   }
 
   .gallery-main-image {
@@ -699,6 +749,8 @@
     align-items: center;
     padding: 20px;
     background: var(--terminal-bg);
+    user-select: none;
+    -webkit-user-select: none;
   }
 
   .gallery-main-image img {
@@ -708,6 +760,7 @@
     border-radius: var(--radius);
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
     animation: zoomIn 0.5s ease;
+    transition: transform 0.3s ease;
   }
 
   @keyframes zoomIn {
@@ -1396,7 +1449,10 @@
           <h3 class="feature-title">Fast Turnaround</h3>
           <p class="feature-description">10 minutes to 10 hours depending on case complexity</p>
           <div class="counter-container">
-            <div class="counter" data-target="3094">0</div>
+            <div class="counter" data-target="3094">
+              0
+              <div class="counter-tooltip">Completed Projects</div>
+            </div>
           </div>
         </div>
         
@@ -1417,7 +1473,10 @@
           <h3 class="feature-title">Teaching Experience</h3>
           <p class="feature-description">Courses on Exocad, MiYO zirconia staining techniques</p>
           <div class="counter-container">
-            <div class="counter" data-target="8">0</div>
+            <div class="counter" data-target="8">
+              0
+              <div class="counter-tooltip">Courses Taught</div>
+            </div>
           </div>
         </div>
           
@@ -1801,6 +1860,8 @@
     const nextBtn = document.querySelector('.next-btn');
 
     let currentImageIndex = 0;
+    let startX = 0;
+    let endX = 0;
 
     // Инициализация галереи
     function initGallery() {
@@ -1821,6 +1882,37 @@
       if (galleryImages.length > 0) {
         showImage(0);
       }
+      
+      // Добавляем обработчики свайпа
+      initSwipeGestures();
+    }
+
+    // Инициализация жестов свайпа
+    function initSwipeGestures() {
+      const galleryBody = document.querySelector('.gallery-body');
+      
+      galleryBody.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+      }, { passive: true });
+      
+      galleryBody.addEventListener('touchmove', (e) => {
+        endX = e.touches[0].clientX;
+      }, { passive: true });
+      
+      galleryBody.addEventListener('touchend', () => {
+        const diffX = startX - endX;
+        const minSwipeDistance = 50; // минимальное расстояние для свайпа
+        
+        if (Math.abs(diffX) > minSwipeDistance) {
+          if (diffX > 0) {
+            // Свайп влево - следующее изображение
+            nextImage();
+          } else {
+            // Свайп вправо - предыдущее изображение
+            prevImage();
+          }
+        }
+      });
     }
 
     // Показать изображение по индексу
@@ -1930,6 +2022,25 @@
         section.style.transform = 'translateY(20px)';
         section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
         observer.observe(section);
+      });
+
+      // Observer for cases (iframes)
+      const caseObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            setTimeout(() => {
+              entry.target.classList.add('visible');
+            }, 200);
+          }
+        });
+      }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      });
+
+      // Observe all cases
+      document.querySelectorAll('.case').forEach(caseElement => {
+        caseObserver.observe(caseElement);
       });
 
       // Special observer for contacts blur box
