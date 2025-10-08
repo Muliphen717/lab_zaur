@@ -1577,6 +1577,10 @@
         <div class="gallery-main-image">
           <img id="mainImage" src="" alt="Dental work photo">
         </div>
+        <div class="gallery-nav">
+          <button class="nav-btn prev-btn" aria-label="Previous image">‹</button>
+          <button class="nav-btn next-btn" aria-label="Next image">›</button>
+        </div>
       </div>
       <div class="gallery-thumbnails" id="thumbnailsContainer">
         <!-- Миниатюры будут добавлены через JavaScript -->
@@ -1599,8 +1603,6 @@
   </footer>
 
   <script>
-   
-
     // ==================== КЛАСС ДЛЯ ПАДАЮЩИХ ЗУБОВ ====================
     class FallingTooth {
       constructor(x, y) {
@@ -1688,6 +1690,7 @@
 
     // Массив для хранения всех зубов
     let teeth = [];
+    let animationId = null;
 
     // Анимационный цикл
     function animateTeeth() {
@@ -1702,7 +1705,9 @@
       });
 
       if (teeth.length > 0) {
-        requestAnimationFrame(animateTeeth);
+        animationId = requestAnimationFrame(animateTeeth);
+      } else {
+        animationId = null;
       }
     }
 
@@ -1713,7 +1718,7 @@
       const y = rect.top + rect.height / 2;
 
       // Создаем несколько зубов
-      const count = 18 + Math.floor(Math.random() * 10); // От 15 до 25 зубов
+      const count = 18 + Math.floor(Math.random() * 10); // От 18 до 28 зубов
       for (let i = 0; i < count; i++) {
         const offsetX = (Math.random() - 0.5) * rect.width;
         const offsetY = (Math.random() - 0.5) * rect.height;
@@ -1721,7 +1726,7 @@
       }
 
       // Запускаем анимацию если она еще не запущена
-      if (teeth.length === count) {
+      if (animationId === null) {
         animateTeeth();
       }
     }
@@ -1739,18 +1744,18 @@
         }, 500);
       }
       
-    
       // Инициализация функционала
       initTypingTitles();
       initCounters();
       initGallery();
       initScrollEffects();
-      initProgressBar(); // Добавляем инициализацию прогресс-бара
       
-      // Добавляем обработчики кликов на все feature-card кроме gallery-card
+      // Добавляем обработчики кликов на все feature-card
       const featureCards = document.querySelectorAll('.feature-card');
       featureCards.forEach(card => {
-        card.addEventListener('click', createTeeth);
+        if (card.id !== 'open-gallery-card') {
+          card.addEventListener('click', createTeeth);
+        }
       });
     });
 
@@ -1992,11 +1997,12 @@
     });
 
     // Вибрация при клике (только на поддерживающих устройствах)
-  document.addEventListener('click', (e) => {
-    if (e.target.closest('.feature-card, .gallery-card, .social-link')) {
-      if (navigator.vibrate) navigator.vibrate(10);
-    }
-  });
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('.feature-card, .gallery-card, .social-link')) {
+        if (navigator.vibrate) navigator.vibrate(10);
+      }
+    });
+
     // Эффекты при скролле
     function initScrollEffects() {
       // Simple animation on scroll
@@ -2083,23 +2089,6 @@
       document.querySelectorAll('.terminal-video-container').forEach(container => {
         videoObserver.observe(container);
       });
-
-      // Back to top button
-      const backToTopBtn = document.querySelector('.back-to-top');
-      window.addEventListener('scroll', () => {
-        if (window.pageYOffset > 300) {
-          backToTopBtn.classList.add('visible');
-        } else {
-          backToTopBtn.classList.remove('visible');
-        }
-      });
-
-      backToTopBtn.addEventListener('click', () => {
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth'
-        });
-      });
     }
 
     // Smooth scrolling for anchor links
@@ -2118,4 +2107,3 @@
   </script>
 </body>
 </html>
-
