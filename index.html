@@ -21,11 +21,26 @@
     --card-bg: #111111;
     --border: #333333;
     --radius: 8px;
-    --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+    --transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --shadow: 0 4px 12px -1px rgba(0, 0, 0, 0.5), 0 2px 6px -1px rgba(0, 0, 0, 0.3);
+    --shadow-hover: 0 8px 25px -3px rgba(255, 107, 0, 0.3), 0 4px 12px -2px rgba(255, 107, 0, 0.2);
+    --shadow-strong: 0 10px 30px -5px rgba(255, 107, 0, 0.4), 0 6px 18px -4px rgba(255, 107, 0, 0.3);
     --terminal-bg: #000000;
-    --glow: 0 0 5px rgba(255, 107, 0, 0.5);
+    --glow: 0 0 8px rgba(255, 107, 0, 0.6);
     --header-height: 80px;
+  }
+
+  /* Progress Bar */
+  .reading-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-light));
+    z-index: 1000;
+    transition: width 0.1s ease;
+    box-shadow: 0 0 10px rgba(255, 107, 0, 0.7);
   }
 
   * {
@@ -126,6 +141,7 @@
     overflow: hidden;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
   }
 
   /* Добавляем объемный эффект для header */
@@ -164,7 +180,10 @@
     border-radius: var(--radius);
     object-fit: cover;
     filter: grayscale(30%) contrast(110%) brightness(0.9);
-    transition: var(--transition);
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                filter 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                border-color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     border: 2px solid var(--accent);
     box-shadow: var(--glow);
   }
@@ -289,12 +308,26 @@
     color: var(--text);
   }
 
+  /* Пульсация для выделенного текста */
   .terminal-highlight {
     color: var(--accent);
     background-color: rgba(255, 107, 0, 0.1);
     padding: 2px 6px;
     border: 1px solid rgba(255, 107, 0, 0.3);
     border-radius: 3px;
+    animation: subtle-pulse 4s ease-in-out infinite;
+    position: relative;
+  }
+
+  @keyframes subtle-pulse {
+    0%, 100% { 
+      box-shadow: 0 0 5px rgba(255, 107, 0, 0.3);
+      background-color: rgba(255, 107, 0, 0.1);
+    }
+    50% { 
+      box-shadow: 0 0 10px rgba(255, 107, 0, 0.5);
+      background-color: rgba(255, 107, 0, 0.15);
+    }
   }
 
   .about-text p {
@@ -328,7 +361,7 @@
     overflow: hidden;
     opacity: 0;
     transform: translateY(20px);
-    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
 
   .terminal-video-container.visible {
@@ -423,9 +456,10 @@
   }
 
   .feature-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(255, 107, 0, 0.2);
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: var(--shadow-hover);
     border-color: var(--accent);
+    z-index: 10;
   }
 
   .feature-card:hover::before {
@@ -559,10 +593,11 @@
   }
 
   .gallery-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(255, 107, 0, 0.3);
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: var(--shadow-strong);
     border-color: var(--accent);
     background: rgba(255, 107, 0, 0.05);
+    z-index: 10;
   }
 
   .gallery-card:hover::before {
@@ -614,11 +649,13 @@
     border: 1px solid var(--border);
     border-radius: var(--radius);
     overflow: hidden;
-    transition: var(--transition);
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                box-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                border-color 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     box-shadow: var(--shadow);
     opacity: 0;
     transform: translateY(20px);
-    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
 
   .case.visible {
@@ -881,7 +918,7 @@
     text-align: center;
     opacity: 0;
     transform: translateY(30px);
-    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     box-shadow: var(--shadow);
     position: relative;
   }
@@ -968,10 +1005,11 @@
   }
 
   .social-link:hover {
-    transform: translateY(-5px);
+    transform: translateY(-6px) scale(1.05);
     background: rgba(34, 34, 34, 0.8);
     border-color: var(--accent);
-    box-shadow: 0 5px 15px rgba(255, 107, 0, 0.3);
+    box-shadow: var(--shadow-hover);
+    z-index: 10;
   }
 
   .social-link:hover::before {
@@ -1008,6 +1046,7 @@
     text-align: center;
     border-top: 1px solid var(--border);
     position: relative;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
   }
 
   .footer-links {
@@ -1120,7 +1159,7 @@
     visibility: hidden;
     z-index: 100;
     border: none;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow);
   }
 
   .back-to-top.visible {
@@ -1396,6 +1435,9 @@
 </head>
 <body>
 
+  <!-- Progress Bar -->
+  <div class="reading-progress" id="readingProgress"></div>
+
   <!-- Loading screen -->
   <div class="loader" id="loader">
     <div class="loader-content">
@@ -1607,6 +1649,20 @@
   </footer>
 
   <script>
+    // ==================== PROGRESS BAR ====================
+    function initProgressBar() {
+      const progressBar = document.getElementById('readingProgress');
+      
+      window.addEventListener('scroll', () => {
+        const windowHeight = window.innerHeight;
+        const documentHeight = document.documentElement.scrollHeight - windowHeight;
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const progress = (scrollTop / documentHeight) * 100;
+        
+        progressBar.style.width = `${progress}%`;
+      });
+    }
+
     // ==================== КЛАСС ДЛЯ ПАДАЮЩИХ ЗУБОВ ====================
     class FallingTooth {
       constructor(x, y) {
@@ -1750,6 +1806,7 @@
       initCounters();
       initGallery();
       initScrollEffects();
+      initProgressBar(); // Добавляем инициализацию прогресс-бара
       
       // Добавляем обработчики кликов на все feature-card кроме gallery-card
       const featureCards = document.querySelectorAll('.feature-card');
