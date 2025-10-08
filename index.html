@@ -1131,38 +1131,6 @@
     color: var(--accent);
   }
 
-  /* BACK TO TOP BUTTON */
-  .back-to-top {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    background: var(--accent);
-    color: var(--bg);
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: var(--transition);
-    opacity: 0;
-    visibility: hidden;
-    z-index: 100;
-    border: none;
-    box-shadow: var(--shadow);
-  }
-
-  .back-to-top.visible {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  .back-to-top:hover {
-    background: var(--accent-light);
-    transform: translateY(-3px);
-  }
-
   @media (max-width: 768px) {
     body {
       font-size: 1.1rem;
@@ -1745,7 +1713,7 @@
       const y = rect.top + rect.height / 2;
 
       // Создаем несколько зубов
-      const count = 20 + Math.floor(Math.random() * 10); // От 15 до 25 зубов
+      const count = 18 + Math.floor(Math.random() * 10); // От 15 до 25 зубов
       for (let i = 0; i < count; i++) {
         const offsetX = (Math.random() - 0.5) * rect.width;
         const offsetY = (Math.random() - 0.5) * rect.height;
