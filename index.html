@@ -1995,6 +1995,12 @@
       }
     });
 
+    // Вибрация при клике (только на поддерживающих устройствах)
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('.feature-card, .gallery-card, .social-link')) {
+      if (navigator.vibrate) navigator.vibrate(10);
+    }
+  });
     // Эффекты при скролле
     function initScrollEffects() {
       // Simple animation on scroll
