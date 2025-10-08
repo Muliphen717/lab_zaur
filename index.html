@@ -1017,11 +1017,6 @@
   }
 
   @media (max-width: 768px) {
-    /* Скрываем кнопку "Наверх" на мобильных устройствах */
-    .back-to-top {
-      display: none;
-    }
-    
     body {
       font-size: 1.1rem;
     }
@@ -1162,45 +1157,11 @@
       font-size: 1.2rem;
     }
     
-    /* Улучшение эргономики для мобильных устройств */
-    .features {
-      grid-template-columns: 1fr;
-      gap: 15px;
-    }
-    
-    .feature-card, .gallery-card {
-      padding: 20px 15px;
-      margin-bottom: 10px;
-    }
-    
-    .social-links {
-      flex-direction: column;
-      align-items: center;
-    }
-    
-    .social-link {
-      width: 100%;
-      max-width: 280px;
-      margin-bottom: 10px;
-    }
-    
-    .footer-links {
-      flex-direction: column;
-      gap: 10px;
-    }
-    
-    .footer-links a {
-      display: block;
-      padding: 10px;
-      text-align: center;
-    }
-    
-    .cases-grid {
-      gap: 30px;
-    }
-    
-    .case-content {
-      padding: 15px;
+    .back-to-top {
+      bottom: 20px;
+      right: 20px;
+      width: 45px;
+      height: 45px;
     }
   }
 
@@ -1288,35 +1249,11 @@
       font-size: 1rem;
     }
     
-    /* Дополнительные улучшения для очень маленьких экранов */
-    .container {
-      padding: 0 15px;
-    }
-    
-    .about-text p {
-      padding: 12px;
-      font-size: 1rem;
-    }
-    
-    .feature-card, .gallery-card {
-      padding: 18px 12px;
-    }
-    
-    .social-link {
-      padding: 15px 10px;
-    }
-    
-    .contacts-blur-box {
-      padding: 25px 15px;
-    }
-    
-    .contacts-subtitle {
-      padding: 12px;
-      font-size: 1rem;
-    }
-    
-    .footer-links a {
-      padding: 8px;
+    .back-to-top {
+      bottom: 15px;
+      right: 15px;
+      width: 40px;
+      height: 40px;
     }
   }
 </style>
@@ -1923,28 +1860,13 @@
         contactsObserver.observe(contactsBox);
       }
 
-      // Back to top button - проверяем, не мобильное ли устройство
+      // Back to top button
       const backToTopBtn = document.querySelector('.back-to-top');
-      // Проверяем ширину экрана для отображения кнопки
-      function checkScreenSize() {
-        if (window.innerWidth <= 768) {
-          backToTopBtn.style.display = 'none';
-        } else {
-          backToTopBtn.style.display = 'flex';
-        }
-      }
-      
-      // Проверяем при загрузке и изменении размера окна
-      checkScreenSize();
-      window.addEventListener('resize', checkScreenSize);
-      
       window.addEventListener('scroll', () => {
-        if (window.innerWidth > 768) {
-          if (window.pageYOffset > 300) {
-            backToTopBtn.classList.add('visible');
-          } else {
-            backToTopBtn.classList.remove('visible');
-          }
+        if (window.pageYOffset > 300) {
+          backToTopBtn.classList.add('visible');
+        } else {
+          backToTopBtn.classList.remove('visible');
         }
       });
 
@@ -1972,3 +1894,5 @@
   </script>
 </body>
 </html>
+
+
