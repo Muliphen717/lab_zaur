@@ -316,6 +316,70 @@
     font-weight: bold;
   }
 
+  /* Стили для видео контейнера */
+  .terminal-video-container {
+    background: var(--terminal-bg);
+    padding: 20px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+    margin: 30px 0;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .terminal-video-container.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+
+  .terminal-video {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    filter: grayscale(0%) contrast(110%) brightness(0.9);
+    transition: var(--transition);
+    position: relative;
+    z-index: 1;
+  }
+
+  .terminal-video:hover {
+    filter: grayscale(0%) contrast(110%) brightness(1.05);
+  }
+
+  .video-caption {
+    color: var(--accent);
+    font-size: 1.1rem;
+    margin-top: 15px;
+    padding: 10px 0 0 0;
+    border-top: 1px solid var(--border);
+    position: relative;
+  }
+
+  /* Градиентные бордюры как у текстовых блоков */
+  .terminal-video-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 1px solid transparent;
+    background: linear-gradient(45deg, transparent, rgba(255, 107, 0, 0.1), transparent);
+    opacity: 0;
+    transition: var(--transition);
+    pointer-events: none;
+    border-radius: var(--radius);
+  }
+
+  .terminal-video-container:hover::after {
+    opacity: 1;
+  }
+
   /* FEATURES */
   .features {
     display: grid;
@@ -1043,6 +1107,20 @@
       padding: 15px;
     }
     
+    .terminal-video-container {
+      padding: 15px;
+      margin: 20px 0;
+    }
+    
+    .terminal-video-container::before {
+      top: 15px;
+      left: 15px;
+    }
+    
+    .video-caption {
+      font-size: 1rem;
+    }
+    
     .feature-title {
       font-size: 1.2rem;
     }
@@ -1190,6 +1268,11 @@
       font-size: 1.5rem;
     }
     
+    .terminal-video-container {
+      padding: 12px;
+      margin: 15px 0;
+    }
+    
     .social-link {
       min-width: 90px;
       padding: 12px 8px;
@@ -1287,6 +1370,15 @@
       <h2 class="section-title typing-title">About Me</h2>
       <div class="about-text">
         <p>I'm a digital smile designer with <span class="terminal-highlight">7 years of experience</span> in CAD/CAM dentistry, specializing in <span class="terminal-highlight">Exocad</span>. I create all types of restorations, including <span class="terminal-highlight">All-on-4, All-on-X</span>, and full-mouth rehabilitations on <span class="terminal-highlight">monolithic zirconia</span>.</p>
+        
+        <!-- Video Work Process -->
+        <div class="terminal-video-container">
+          <video autoplay muted loop playsinline class="terminal-video">
+            <source src="video/work-process.mp4" type="video/mp4">
+            <source src="video/work-process.webm" type="video/webm">
+            Your browser does not support the video tag.
+          </video>
+        </div>
         
         <p>I own a fully equipped dental laboratory in my hometown, which allows me to perform the entire production cycle myself — from digital design to final finishing. This gives me a clear understanding of how each restoration should fit and function inside the patient's mouth.</p>
         
@@ -1860,6 +1952,25 @@
         contactsObserver.observe(contactsBox);
       }
 
+      // Observer for video container
+      const videoObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            setTimeout(() => {
+              entry.target.classList.add('visible');
+            }, 400);
+          }
+        });
+      }, {
+        threshold: 0.3,
+        rootMargin: '0px 0px -50px 0px'
+      });
+
+      // Observe all terminal-video-container
+      document.querySelectorAll('.terminal-video-container').forEach(container => {
+        videoObserver.observe(container);
+      });
+
       // Back to top button
       const backToTopBtn = document.querySelector('.back-to-top');
       window.addEventListener('scroll', () => {
@@ -1894,5 +2005,4 @@
   </script>
 </body>
 </html>
-
 
