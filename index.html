@@ -1582,6 +1582,9 @@
         <h3 class="gallery-title-modal" id="galleryTitle">My Work Gallery</h3>
         <button class="close-gallery" aria-label="Close gallery">&times;</button>
       </div>
+      <div class="gallery-body">
+        <div class="gallery-main-image">
+          <img id="mainImage" src="" alt="Dental work photo" class="slide-in">
         </div>
       </div>
       <div class="gallery-thumbnails" id="thumbnailsContainer">
@@ -1864,25 +1867,9 @@
     let startX = 0;
     let endX = 0;
     let isAnimating = false;
-    let imagesPreloaded = false;
-
-    // Функция предзагрузки изображений
-    function preloadGalleryImages() {
-      if (imagesPreloaded) return;
-      
-      galleryImages.forEach((image) => {
-        const img = new Image();
-        img.src = image.src;
-      });
-      
-      imagesPreloaded = true;
-    }
 
     // Инициализация галереи
     function initGallery() {
-      // Предзагружаем изображения при инициализации
-      preloadGalleryImages();
-      
       galleryImages.forEach((image, index) => {
         const thumbnail = document.createElement('img');
         thumbnail.src = image.src;
@@ -1900,7 +1887,7 @@
       });
       
       if (galleryImages.length > 0) {
-        showImage(0, false); // Показываем первое изображение без анимации при инициализации
+        showImage(0);
       }
       
       // Добавляем обработчики свайпа
@@ -1956,17 +1943,15 @@
     }
 
     // Показать изображение по индексу с плавной анимацией
-    function showImage(index, animate = true) {
+    function showImage(index) {
       if (isAnimating || index === currentImageIndex) return;
       
       isAnimating = true;
       currentImageIndex = index;
       const image = galleryImages[index];
       
-      // Добавляем класс анимации только если требуется анимация
-      if (animate) {
-        mainImage.classList.add('slide-in');
-      }
+      // Добавляем класс анимации
+      mainImage.classList.add('slide-in');
       
       // Устанавливаем новое изображение
       mainImage.src = image.src;
@@ -1982,14 +1967,10 @@
         `My Work Gallery (${index + 1}/${galleryImages.length})`;
       
       // Сбрасываем анимацию после завершения
-      if (animate) {
-        setTimeout(() => {
-          mainImage.classList.remove('slide-in');
-          isAnimating = false;
-        }, 400);
-      } else {
+      setTimeout(() => {
+        mainImage.classList.remove('slide-in');
         isAnimating = false;
-      }
+      }, 400);
     }
 
     // Следующее изображение
@@ -2012,24 +1993,10 @@
 
     // Открыть галерею
     function openGallery() {
-      // Убедимся, что первое изображение загружено
-      const firstImage = new Image();
-      firstImage.onload = function() {
-        galleryModal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-        // Фокус на кнопке закрытия для доступности
-        closeGalleryBtn.focus();
-      };
-      firstImage.src = galleryImages[0].src;
-      
-      // Если изображение уже в кеше, onload может не сработать
-      setTimeout(() => {
-        if (!galleryModal.classList.contains('active')) {
-          galleryModal.classList.add('active');
-          document.body.style.overflow = 'hidden';
-          closeGalleryBtn.focus();
-        }
-      }, 100);
+      galleryModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      // Фокус на кнопке закрытия для доступности
+      closeGalleryBtn.focus();
     }
 
     // Закрыть галерею
