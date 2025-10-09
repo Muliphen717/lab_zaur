@@ -771,6 +771,8 @@
     background: var(--terminal-bg);
     user-select: none;
     -webkit-user-select: none;
+    position: relative;
+    overflow: hidden;
   }
 
   .gallery-main-image img {
@@ -779,58 +781,23 @@
     object-fit: contain;
     border-radius: var(--radius);
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-    animation: zoomIn 0.5s ease;
-    transition: transform 0.3s ease;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+    position: absolute;
   }
 
-  @keyframes zoomIn {
+  .gallery-main-image img.slide-in {
+    animation: slideIn 0.4s ease;
+  }
+
+  @keyframes slideIn {
     from { 
-      transform: scale(0.9);
       opacity: 0;
+      transform: translateX(30px);
     }
     to { 
-      transform: scale(1);
       opacity: 1;
+      transform: translateX(0);
     }
-  }
-
-  .gallery-nav {
-    position: absolute;
-    top: 50%;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    padding: 0 20px;
-    transform: translateY(-50%);
-  }
-
-  .nav-btn {
-    background: rgba(0, 0, 0, 0.7);
-    color: var(--text);
-    border: 1px solid var(--border);
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: var(--transition);
-    font-size: 1.5rem;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  .nav-btn:hover {
-    background: var(--accent);
-    color: var(--bg);
-    border-color: var(--accent);
-    transform: scale(1.1);
-  }
-
-  /* Эффект продавливания для кнопок навигации */
-  .nav-btn:active {
-    transform: scale(0.95);
-    transition: transform 0.1s ease;
   }
 
   .gallery-thumbnails {
@@ -1172,18 +1139,50 @@
       font-size: 1rem;
     }
     
+    /* Мобильная версия для карточек - 2 в строку */
+    .features {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+    
+    .feature-card {
+      padding: 20px 15px;
+      min-height: 180px;
+    }
+    
+    .feature-icon {
+      font-size: 1.8rem;
+    }
+    
     .feature-title {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
     }
     
     .feature-description {
-      font-size: 1rem;
+      font-size: 0.95rem;
       padding: 10px;
     }
     
     .counter {
-      font-size: 1.2rem;
-      padding: 6px 10px;
+      font-size: 1.1rem;
+      padding: 5px 8px;
+    }
+    
+    .gallery-card {
+      padding: 20px 15px;
+      min-height: 180px;
+    }
+    
+    .gallery-icon {
+      font-size: 2.2rem;
+    }
+    
+    .gallery-title {
+      font-size: 1.1rem;
+    }
+    
+    .gallery-description {
+      font-size: 0.95rem;
     }
     
     .case h3 {
@@ -1263,12 +1262,6 @@
       padding: 10px;
     }
     
-    .nav-btn {
-      width: 40px;
-      height: 40px;
-      font-size: 1.2rem;
-    }
-    
     .thumbnail {
       width: 60px;
       height: 60px;
@@ -1284,13 +1277,6 @@
     
     .gallery-title {
       font-size: 1.2rem;
-    }
-    
-    .back-to-top {
-      bottom: 20px;
-      right: 20px;
-      width: 45px;
-      height: 45px;
     }
   }
 
@@ -1324,6 +1310,47 @@
       margin: 15px 0;
     }
     
+    /* Для очень маленьких экранов - 2 карточки в строку с меньшими отступами */
+    .features {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    
+    .feature-card {
+      padding: 15px 12px;
+      min-height: 160px;
+    }
+    
+    .feature-icon {
+      font-size: 1.6rem;
+    }
+    
+    .feature-title {
+      font-size: 1rem;
+    }
+    
+    .feature-description {
+      font-size: 0.9rem;
+      padding: 8px;
+    }
+    
+    .gallery-card {
+      padding: 15px 12px;
+      min-height: 160px;
+    }
+    
+    .gallery-icon {
+      font-size: 1.8rem;
+    }
+    
+    .gallery-title {
+      font-size: 1rem;
+    }
+    
+    .gallery-description {
+      font-size: 0.9rem;
+    }
+    
     .social-link {
       min-width: 90px;
       padding: 12px 8px;
@@ -1334,8 +1361,8 @@
     }
     
     .counter {
-      font-size: 1.1rem;
-      padding: 5px 8px;
+      font-size: 1rem;
+      padding: 4px 6px;
     }
     
     .profile-image {
@@ -1355,20 +1382,9 @@
       margin-bottom: 40px;
     }
     
-    .features {
-      grid-template-columns: 1fr;
-    }
-    
     .thumbnail {
       width: 50px;
       height: 50px;
-    }
-    
-    .nav-btn {
-      width: 35px;
-      height: 35px;
-      font-size: 1rem;
-      padding: 0 10px;
     }
     
     .gallery-icon {
@@ -1381,13 +1397,6 @@
     
     .gallery-description {
       font-size: 1rem;
-    }
-    
-    .back-to-top {
-      bottom: 15px;
-      right: 15px;
-      width: 40px;
-      height: 40px;
     }
   }
 </style>
@@ -1575,11 +1584,7 @@
       </div>
       <div class="gallery-body">
         <div class="gallery-main-image">
-          <img id="mainImage" src="" alt="Dental work photo">
-        </div>
-        <div class="gallery-nav">
-          <button class="nav-btn prev-btn" aria-label="Previous image">‹</button>
-          <button class="nav-btn next-btn" aria-label="Next image">›</button>
+          <img id="mainImage" src="" alt="Dental work photo" class="slide-in">
         </div>
       </div>
       <div class="gallery-thumbnails" id="thumbnailsContainer">
@@ -1857,12 +1862,11 @@
     const closeGalleryBtn = document.querySelector('.close-gallery');
     const mainImage = document.getElementById('mainImage');
     const thumbnailsContainer = document.getElementById('thumbnailsContainer');
-    const prevBtn = document.querySelector('.prev-btn');
-    const nextBtn = document.querySelector('.next-btn');
 
     let currentImageIndex = 0;
     let startX = 0;
     let endX = 0;
+    let isAnimating = false;
 
     // Инициализация галереи
     function initGallery() {
@@ -1874,7 +1878,9 @@
         if (index === 0) thumbnail.classList.add('active');
         
         thumbnail.addEventListener('click', () => {
-          showImage(index);
+          if (!isAnimating) {
+            showImage(index);
+          }
         });
         
         thumbnailsContainer.appendChild(thumbnail);
@@ -1901,6 +1907,8 @@
       }, { passive: true });
       
       galleryBody.addEventListener('touchend', () => {
+        if (isAnimating) return;
+        
         const diffX = startX - endX;
         const minSwipeDistance = 50; // минимальное расстояние для свайпа
         
@@ -1914,22 +1922,55 @@
           }
         }
       });
+
+      // Обработчики для десктопных устройств (клики по краям)
+      galleryBody.addEventListener('click', (e) => {
+        if (isAnimating) return;
+        
+        const rect = galleryBody.getBoundingClientRect();
+        const clickX = e.clientX - rect.left;
+        const width = rect.width;
+        
+        // Если клик в левой трети экрана - предыдущее изображение
+        if (clickX < width / 3) {
+          prevImage();
+        }
+        // Если клик в правой трети экрана - следующее изображение
+        else if (clickX > width * 2 / 3) {
+          nextImage();
+        }
+      });
     }
 
-    // Показать изображение по индексу
+    // Показать изображение по индексу с плавной анимацией
     function showImage(index) {
+      if (isAnimating || index === currentImageIndex) return;
+      
+      isAnimating = true;
       currentImageIndex = index;
       const image = galleryImages[index];
       
+      // Добавляем класс анимации
+      mainImage.classList.add('slide-in');
+      
+      // Устанавливаем новое изображение
       mainImage.src = image.src;
       mainImage.alt = image.alt;
       
+      // Обновляем активную миниатюру
       document.querySelectorAll('.thumbnail').forEach((thumb, i) => {
         thumb.classList.toggle('active', i === index);
       });
       
+      // Обновляем заголовок
       document.querySelector('.gallery-title-modal').textContent = 
         `My Work Gallery (${index + 1}/${galleryImages.length})`;
+      
+      // Сбрасываем анимацию после завершения
+      setTimeout(() => {
+        mainImage.classList.remove('slide-in');
+        isAnimating = false;
+      }, 400);
     }
 
     // Следующее изображение
@@ -1969,8 +2010,6 @@
     // Обработчики событий для галереи
     openGalleryCard.addEventListener('click', openGallery);
     closeGalleryBtn.addEventListener('click', closeGallery);
-    prevBtn.addEventListener('click', prevImage);
-    nextBtn.addEventListener('click', nextImage);
 
     // Закрытие по клику вне контента
     galleryModal.addEventListener('click', (e) => {
@@ -1981,7 +2020,7 @@
 
     // Навигация с клавиатуры
     document.addEventListener('keydown', (e) => {
-      if (galleryModal.classList.contains('active')) {
+      if (galleryModal.classList.contains('active') && !isAnimating) {
         switch(e.key) {
           case 'Escape':
             closeGallery();
