@@ -1950,7 +1950,12 @@
       currentImageIndex = index;
       const image = galleryImages[index];
       
-
+      // Добавляем класс анимации
+      mainImage.classList.add('slide-in');
+      
+      // Устанавливаем новое изображение
+      mainImage.src = image.src;
+      mainImage.alt = image.alt;
       
       // Обновляем активную миниатюру
       document.querySelectorAll('.thumbnail').forEach((thumb, i) => {
