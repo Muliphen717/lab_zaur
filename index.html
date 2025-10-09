@@ -1867,40 +1867,44 @@
     let startX = 0;
     let endX = 0;
     let isAnimating = false;
+    let imagesPreloaded = false;
+
+    // Функция предзагрузки изображений
+    function preloadGalleryImages() {
+      if (imagesPreloaded) return;
+      
+      galleryImages.forEach((image) => {
+        const img = new Image();
+        img.src = image.src;
+      });
+      
+      imagesPreloaded = true;
+    }
 
     // Инициализация галереи
-function initGallery() {
-  // Очищаем контейнер миниатюр
-  thumbnailsContainer.innerHTML = '';
-  
-  galleryImages.forEach((image, index) => {
-    const thumbnail = document.createElement('img');
-    thumbnail.src = image.src;
-    thumbnail.alt = image.alt;
-    thumbnail.className = 'thumbnail';
-    if (index === 0) thumbnail.classList.add('active');
-    
-    thumbnail.addEventListener('click', () => {
-      if (!isAnimating) {
-        showImage(index);
+    function initGallery() {
+      // Предзагружаем изображения при инициализации
+      preloadGalleryImages();
+      
+      galleryImages.forEach((image, index) => {
+        const thumbnail = document.createElement('img');
+        thumbnail.src = image.src;
+        thumbnail.alt = image.alt;
+        thumbnail.className = 'thumbnail';
+        if (index === 0) thumbnail.classList.add('active');
+        
+        thumbnail.addEventListener('click', () => {
+          if (!isAnimating) {
+            showImage(index);
+          }
+        });
+        
+        thumbnailsContainer.appendChild(thumbnail);
+      });
+      
+      if (galleryImages.length > 0) {
+        showImage(0, false); // Показываем первое изображение без анимации при инициализации
       }
-    });
-    
-    thumbnailsContainer.appendChild(thumbnail);
-  });
-  
-    // Устанавливаем первое изображение как активное
-    showImage(0);
-  }).catch(() => {
-    // Если предзагрузка не удалась, все равно показываем первое изображение
-    showImage(0);
-  });
-  
-  // Добавляем обработчики свайпа
-  initSwipeGestures();
-}
-
-}
       
       // Добавляем обработчики свайпа
       initSwipeGestures();
@@ -1955,15 +1959,17 @@ function initGallery() {
     }
 
     // Показать изображение по индексу с плавной анимацией
-    function showImage(index) {
+    function showImage(index, animate = true) {
       if (isAnimating || index === currentImageIndex) return;
       
       isAnimating = true;
       currentImageIndex = index;
       const image = galleryImages[index];
       
-      // Добавляем класс анимации
-      mainImage.classList.add('slide-in');
+      // Добавляем класс анимации только если требуется анимация
+      if (animate) {
+        mainImage.classList.add('slide-in');
+      }
       
       // Устанавливаем новое изображение
       mainImage.src = image.src;
@@ -1979,10 +1985,14 @@ function initGallery() {
         `My Work Gallery (${index + 1}/${galleryImages.length})`;
       
       // Сбрасываем анимацию после завершения
-      setTimeout(() => {
-        mainImage.classList.remove('slide-in');
+      if (animate) {
+        setTimeout(() => {
+          mainImage.classList.remove('slide-in');
+          isAnimating = false;
+        }, 400);
+      } else {
         isAnimating = false;
-      }, 400);
+      }
     }
 
     // Следующее изображение
@@ -2003,17 +2013,27 @@ function initGallery() {
       showImage(prevIndex);
     }
 
-  // Открыть галерею
-function openGallery() {
-  // Всегда показываем первое изображение при открытии
-  showImage(0);
-  
-  galleryModal.classList.add('active');
-  document.body.style.overflow = 'hidden';
-  
-  // Фокус на кнопке закрытия для доступности
-  closeGalleryBtn.focus();
-}
+    // Открыть галерею
+    function openGallery() {
+      // Убедимся, что первое изображение загружено
+      const firstImage = new Image();
+      firstImage.onload = function() {
+        galleryModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        // Фокус на кнопке закрытия для доступности
+        closeGalleryBtn.focus();
+      };
+      firstImage.src = galleryImages[0].src;
+      
+      // Если изображение уже в кеше, onload может не сработать
+      setTimeout(() => {
+        if (!galleryModal.classList.contains('active')) {
+          galleryModal.classList.add('active');
+          document.body.style.overflow = 'hidden';
+          closeGalleryBtn.focus();
+        }
+      }, 100);
+    }
 
     // Закрыть галерею
     function closeGallery() {
