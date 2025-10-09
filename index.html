@@ -1889,8 +1889,6 @@ function initGallery() {
     thumbnailsContainer.appendChild(thumbnail);
   });
   
-  // Предзагружаем первое изображение
-  preloadImage(galleryImages[0].src).then(() => {
     // Устанавливаем первое изображение как активное
     showImage(0);
   }).catch(() => {
@@ -1902,14 +1900,6 @@ function initGallery() {
   initSwipeGestures();
 }
 
-// Функция предзагрузки изображения
-function preloadImage(src) {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = resolve;
-    img.onerror = reject;
-    img.src = src;
-  });
 }
       
       // Добавляем обработчики свайпа
