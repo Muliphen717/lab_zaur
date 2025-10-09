@@ -1608,7 +1608,7 @@
   </footer>
 
   <script>
-    // ==================== КЛАСС ДЛЯ ПАДАЮЩИХ ЗУБОВ ====================
+        // ==================== КЛАСС ДЛЯ ПАДАЮЩИХ ЗУБОВ ====================
     class FallingTooth {
       constructor(x, y) {
         this.element = document.createElement('div');
@@ -1870,6 +1870,7 @@
 
     // Инициализация галереи
     function initGallery() {
+      // Создаем миниатюры
       galleryImages.forEach((image, index) => {
         const thumbnail = document.createElement('img');
         thumbnail.src = image.src;
@@ -1886,12 +1887,30 @@
         thumbnailsContainer.appendChild(thumbnail);
       });
       
+      // Устанавливаем первое изображение сразу при загрузке
       if (galleryImages.length > 0) {
-        showImage(0);
+        setMainImage(0);
       }
       
       // Добавляем обработчики свайпа
       initSwipeGestures();
+    }
+
+    // Установка главного изображения (без анимации)
+    function setMainImage(index) {
+      currentImageIndex = index;
+      const image = galleryImages[index];
+      mainImage.src = image.src;
+      mainImage.alt = image.alt;
+      
+      // Обновляем активную миниатюру
+      document.querySelectorAll('.thumbnail').forEach((thumb, i) => {
+        thumb.classList.toggle('active', i === index);
+      });
+      
+      // Обновляем заголовок
+      document.querySelector('.gallery-title-modal').textContent = 
+        `My Work Gallery (${index + 1}/${galleryImages.length})`;
     }
 
     // Инициализация жестов свайпа
@@ -1993,6 +2012,11 @@
 
     // Открыть галерею
     function openGallery() {
+      // Убеждаемся, что первое изображение установлено
+      if (!mainImage.src || mainImage.src === '') {
+        setMainImage(0);
+      }
+      
       galleryModal.classList.add('active');
       document.body.style.overflow = 'hidden';
       // Фокус на кнопке закрытия для доступности
@@ -2143,6 +2167,7 @@
         }
       });
     });
+    
   </script>
 </body>
 </html>
