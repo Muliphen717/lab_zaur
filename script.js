@@ -210,7 +210,8 @@ const galleryImages = [
   { src: "photos/4.jpg", alt: "Dental work example 4" },
   { src: "photos/5.png", alt: "Dental work example 5" },
   { src: "photos/6.png", alt: "Dental work example 6" },
-  { src: "photos/7.png", alt: "Dental work example 7" }
+  { src: "photos/7.png", alt: "Dental work example 7" },
+  { src: "photos/8.png", alt: "Dental work example 8" }
 ];
 // Элементы галереи
 const galleryModal = document.getElementById('galleryModal');
